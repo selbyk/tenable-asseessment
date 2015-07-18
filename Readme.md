@@ -1,6 +1,6 @@
 # Tenable Programming Assessment
 
-My solution to the programming assessment specified in ./docs/Assessment.md
+My solution to the programming assessment specified in [./docs/Assessment.md](https://github.com/selbyk/tenable-asseessment/blob/master/docs/Assessment.md)
 
 ##### Timeline
 - Day 1
