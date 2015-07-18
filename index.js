@@ -1,26 +1,46 @@
-// Require our needed modules
-var http = require('http');
-var https = require('https');
-var fs = require('fs');
+/**
+  * Define global types for documentation
+  */
 
-// Configure https keys
-var httpsOptions = {
-  key: fs.readFileSync('./certs/key.pem'),
-  cert: fs.readFileSync('./certs/cert.pem'),
-  requestCert: false,
-  rejectUnauthorized: false
-};
+/** Function used to handle a request
+ * @name RequestHandler
+ * @callback
+ * @param {http.IncomingMessage} req - Object containing request information recieve by server.
+ * @param {http.ServerResponse} res - Object containing the information we will response to the request with
+ */
 
-// Create our servers
-var httpServer = http.createServer();
-var httpsServer = https.createServer(httpsOptions);
+/**
+ * Object that defines a route
+ * @typedef {Object} Route
+ * @property {string} method - Type of http request ('GET', 'PUT', 'DELETE', 'POST')
+ * @property {string} regex - Regex to match url path, similar to express
+ * @property {RequestHandler} - RequestHandler function for the route
+ */
+
+ // Require needed core Node.js modules
+ var http = require('http');
+ var https = require('https');
+ var fs = require('fs');
+
+ // Configure https keys
+ var httpsOptions = {
+   key: fs.readFileSync('./certs/key.pem'),
+   cert: fs.readFileSync('./certs/cert.pem'),
+   requestCert: false,
+   rejectUnauthorized: false
+ };
+
+ // Require Router module, routes, and initalize routes in the Router
+ var Router = require('./modules/router');
+ var routes = require('./routes');
+ Router.mapRoutes(routes);
 
 /**
  * Handles all errors thrown by the servers.
  * @function handleSeverError
  * @param {Object} err - The error that was thrown.
  */
-function handleSeverError(err){
+function handleSeverError(err) {
   if (err.code == 'EADDRINUSE') {
     console.log('Address in use, retrying...');
     setTimeout(function() {
@@ -32,19 +52,24 @@ function handleSeverError(err){
 
 /**
  * Handles all client requests.
- * @function handleClientRequest
- * @param {http.IncomingMessage} req - Object containing request information recieve by server.
- * @param {http.ServerResponse} res - Object containing the information we will response to the request with
+ * @name handleClientRequest
+ * @type {RequestHandler}
  */
 function handleClientRequest(req, res) {
   console.log(req.method + " " + req.url);
-  var body = 'Hello, world.';
+  // Pass request to router for handling
+  Router.routeRequest(req,res);
+  /*var body = 'Hello, world.';
   res.writeHead(200, {
     'Content-Length': body.length,
     'Content-Type': 'text/plain'
   });
-  res.end(body);
+  res.end(body);*/
 }
+
+// Create our servers
+var httpServer = http.createServer();
+var httpsServer = https.createServer(httpsOptions);
 
 httpsServer.on('error', handleSeverError);
 httpsServer.on('request', handleClientRequest);
