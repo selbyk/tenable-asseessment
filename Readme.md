@@ -24,8 +24,10 @@ job even though I hate the name.
  - Decide keeping a timeline is a decent way to show my thought process and to
 show the learning phase I use on projects what are uncharted territory for me
  - Push the ember stuff to github in case my computer blows up or something
- - Start a new git repository with only the Swagger definition and markdown files
+ - Started a new git repository with only the Swagger definition and markdown files
 so that I can copy over my draft
+ - Got the Router documented and working with a hello world route, now I think all that's left is the ElasticSearch client and to define the routes.
+ - I also found a bug in some guy's small project I'm using to generate Bootstrap code from the Swagger specs.  It's bizarrely tiny and ridiculous. 2 extra chars in 10000 lines of CSS. -.-' https://github.com/nknapp/swagger-to-html/issues/3
 
 References Used:
 - [https://nodejs.org/api/](https://nodejs.org/api/)
