@@ -1,18 +1,23 @@
 {
-    "tags": {
-        "allowUnknownTags": true,
-        "dictionaries": ["jsdoc","closure"]
-    },
-    "source": {
-    "include": [ "./" ],
-    "exclude": [ ],
+  "opts": {
+    "template": "templates/default",
+    "encoding": "utf8",
+    "destination": "./docs/jsdocs/",
+    "recurse": true
+  },
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc", "closure"]
+  },
+  "source": {
+    "include": ["./"],
+    "exclude": [],
     "includePattern": ".+\\.js(doc)?$",
     "excludePattern": "(^|\\/|\\\\)_"
-},
-    "destination": "./out/",
-    "plugins": ["plugins/markdown"],
-    "templates": {
-        "cleverLinks": false,
-        "monospaceLinks": false
-    }
+  },
+  "plugins": ["plugins/markdown"],
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false
+  }
 }
