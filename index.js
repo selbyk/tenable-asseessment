@@ -32,8 +32,9 @@ function handleSeverError(err){
 
 /**
  * Handles all client requests.
- * @function handleSeverError
- * @param {Object} err - The error that was thrown.
+ * @function handleClientRequest
+ * @param {http.IncomingMessage} req - Object containing request information recieve by server.
+ * @param {http.ServerResponse} res - Object containing the information we will response to the request with
  */
 function handleClientRequest(req, res) {
   console.log(req.method + " " + req.url);

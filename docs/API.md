@@ -6,7 +6,7 @@
 
 * * *
 
-### handleSeverError(err) 
+### handleSeverError(err)
 
 Handles all errors thrown by the servers.
 
@@ -16,13 +16,15 @@ Handles all errors thrown by the servers.
 
 
 
-### handleSeverError(err)
+### handleClientRequest(req, res)
 
 Handles all client requests.
 
 **Parameters**
 
-**err**: `Object`, The error that was thrown.
+**req**: `http.IncomingMessage`, Object containing request information recieve by server.
+
+**res**: `http.ServerResponse`, Object containing the information we will response to the request with
 
 
 
