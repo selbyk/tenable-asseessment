@@ -1,445 +1,524 @@
 {
-  "swagger": "2.0",
-  "info": {
-    "title": "Asce: Authenticated Server Configurations with ElasticSearch",
-    "description": "Authenticate and all the configurations are belong to you.",
-    "version": "0.0.0"
-  },
-  "securityDefinitions": {
-    "oauth2": {
-      "type": "oauth2",
-      "scopes": {
-        "access:authenticated": "authenticated access only",
-        "read:configurations": "can read configurations",
-        "create:configurations": "can create configuration",
-        "delete:configurations": "can delete configurations",
-        "modify:configurations": "can modify configurations"
-      },
-      "flow": "implicit",
-      "authorizationUrl": "/auth/identify"
-    }
-  },
-  "host": "localhost",
-  "schemes": [
-    "https"
-  ],
-  "basePath": "/api",
-  "produces": [
-    "application/json"
-  ],
-  "paths": {
-    "/auth/identify": {
-      "get": {
-        "summary": "User Authentication",
-        "description": "Return token(s) granting access for a user if proper credentials are provided.\n",
-        "parameters": [{
-          "name": "user",
-          "in": "body",
-          "description": "user to add to the system",
-          "required": true,
-          "schema": {
-            "$ref": "#/definitions/UserIdentity"
-          }
-        }],
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "Authentication Successful",
-            "schema": {
-              "$ref": "#/definitions/Grant"
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "default": {
-            "description": "Unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
+    "swagger": "2.0",
+    "info": {
+        "title": "Asce: Authenticated Server Configurations with ElasticSearch",
+        "description": "Authenticate and all the configurations are belong to you.",
+        "version": "0.0.0"
+    },
+    "securityDefinitions": {
+        "oauth2": {
+            "type": "oauth2",
+            "scopes": {
+                "view:authenticated": "authenticated access only",
+                "view:configurations": "can read configurations",
+                "create:configurations": "can create configuration",
+                "delete:configurations": "can delete configurations",
+                "edit:configurations": "can modify configurations"
+            },
+            "flow": "implicit",
+            "authorizationUrl": "/auth/identify"
         }
-      }
     },
-    "/auth/revoke": {
-      "get": {
-        "summary": "Revoke User's Access Tokens",
-        "description": "The access token(s) for the authenticated user become invalid, and the user must reauthenticate to receive valid tokens.\n",
-        "parameters": [{
-          "name": "Authentication",
-          "in": "header",
-          "description": "Bearer token for oauth2 authentication (`Bearer <token>`)",
-          "required": true,
-          "type": "string"
-        }],
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "Access Revoked Successfully",
-            "schema": {
-              "$ref": "#/definitions/AccessGrant"
+    "host": "localhost",
+    "schemes": [
+        "https"
+    ],
+    "basePath": "/api",
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/auth/register": {
+            "post": {
+                "summary": "User Registration",
+                "description": "Return message about status of registration\n",
+                "parameters": [
+                    {
+                        "name": "credentials",
+                        "in": "body",
+                        "description": "user to add to the system",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/credentials"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "New account creation successful",
+                        "schema": {
+                            "$ref": "#/definitions/message"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/message"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/message"
+                        }
+                    }
+                }
             }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "default": {
-            "description": "Unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
         },
-        "security": [{
-          "oauth2": [
-            "authenticated"
-          ]
-        }]
-      }
-    },
-    "/auth/me": {
-      "get": {
-        "summary": "User Profile",
-        "description": "The User Profile endpoint returns information about the Uber user that has authorized with the application.",
-        "parameters": [{
-          "name": "Authentication",
-          "in": "header",
-          "description": "Bearer token for oauth2 authentication (`Bearer <token>`)",
-          "required": true,
-          "type": "string"
-        }],
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/User"
+        "/auth/identify": {
+            "post": {
+                "summary": "User Authentication",
+                "description": "Return token(s) granting access for a user if proper credentials are provided.\n",
+                "parameters": [
+                    {
+                        "name": "credentials",
+                        "in": "body",
+                        "description": "user to add to the system",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/credentials"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Authentication Successful",
+                        "schema": {
+                            "$ref": "#/definitions/grant"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/message"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/message"
+                        }
+                    }
+                }
             }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "default": {
-            "description": "Unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
         },
-        "security": [{
-          "oauth2": [
-            "authenticated"
-          ]
-        }]
-      }
-    },
-    "/configurations": {
-      "get": {
-        "summary": "List Configurations",
-        "description": "List of all configurations stored in the database",
-        "parameters": [{
-          "name": "Authentication",
-          "in": "header",
-          "description": "Bearer token for oauth2 authentication (`Bearer <token>`)",
-          "required": true,
-          "type": "string"
-        }, {
-          "name": "offset",
-          "in": "query",
-          "type": "integer",
-          "format": "int32",
-          "description": "Offset the list of returned results by this amount. Default is 0."
-        }, {
-          "name": "limit",
-          "in": "query",
-          "type": "integer",
-          "format": "int32",
-          "description": "Number of items to retrieve. Default is 10, maximum is 100."
-        }, {
-          "name": "sort",
-          "in": "query",
-          "type": "string",
-          "description": "Keys to sort list by, formatted as (key1,-key2) and '-' denoting that the key should be sorted in decending order."
-        }],
-        "tags": [
-          "Server"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Configuration"
-              }
+        "/auth/revoke": {
+            "get": {
+                "summary": "Revoke User's Access Tokens",
+                "description": "The access token(s) for the authenticated user become invalid, and the user must reauthenticate to receive valid tokens.\n",
+                "parameters": [
+                    {
+                        "name": "Authentication",
+                        "in": "header",
+                        "description": "Bearer token for oauth2 authentication (`Bearer <token>`)",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Access Revoked Successfully",
+                        "schema": {
+                            "$ref": "#/definitions/message"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/message"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/message"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "view:authenticated"
+                        ]
+                    }
+                ]
             }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "default": {
-            "description": "Unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
         },
-        "security": [{
-          "oauth2": [
-            "read:configurations"
-          ]
-        }]
-      },
-      "post": {
-        "summary": "Create Configuration",
-        "description": "Creates a new configuration",
-        "parameters": [{
-            "name": "Authentication",
-            "in": "header",
-            "description": "Bearer token for oauth2 authentication (`Bearer <token>`)",
-            "required": true,
-            "type": "string"
-        }, {
-          "name": "configuration",
-          "in": "body",
-          "description": "New configuration to add to the system",
-          "required": true,
-          "schema": {
-            "$ref": "#/definitions/Configuration"
-          }
-        }],
-        "tags": [
-          "Server"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Configuration"
+        "/auth/me": {
+            "get": {
+                "summary": "User Profile",
+                "description": "The User Profile endpoint returns information about the Uber user that has authorized with the application.",
+                "parameters": [
+                    {
+                        "name": "Authentication",
+                        "in": "header",
+                        "description": "Bearer token for oauth2 authentication (`Bearer <token>`)",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/message"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/message"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "view:authenticated"
+                        ]
+                    }
+                ]
             }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "default": {
-            "description": "Unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
         },
-        "security": [{
-          "oauth2": [
-            "create:configurations"
-          ]
-        }]
-      }
-    },
-    "/configurations/{name}": {
-      "put": {
-        "summary": "Update Configuration",
-        "description": "Updates configuration that has name {name}",
-        "parameters": [{
-            "name": "Authentication",
-            "in": "header",
-            "description": "Bearer token for oauth2 authentication (`Bearer <token>`)",
-            "required": true,
-            "type": "string"
-        }, {
-          "name": "name",
-          "in": "path",
-          "description": "name of configuration to update",
-          "required": true,
-          "type": "string"
-        }, {
-          "name": "configuration",
-          "in": "body",
-          "description": "data to update configuration with",
-          "required": true,
-          "schema": {
-            "$ref": "#/definitions/Configuration"
-          }
-        }],
-        "tags": [
-          "Server"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Configuration"
+        "/configurations": {
+            "get": {
+                "summary": "List Configurations",
+                "description": "List of all configurations stored in the database",
+                "parameters": [
+                    {
+                        "name": "Authentication",
+                        "in": "header",
+                        "description": "Bearer token for oauth2 authentication (`Bearer <token>`)",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Offset the list of returned results by this amount. Default is 0."
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Number of items to retrieve. Default is 10, maximum is 100."
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Keys to sort list by, formatted as (key1,-key2) and '-' denoting that the key should be sorted in decending order."
+                    }
+                ],
+                "tags": [
+                    "Server Configurations"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/configuration"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/message"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/message"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "view:configurations"
+                        ]
+                    }
+                ]
+            },
+            "post": {
+                "summary": "Create Configuration",
+                "description": "Creates a new configuration",
+                "parameters": [
+                    {
+                        "name": "Authentication",
+                        "in": "header",
+                        "description": "Bearer token for oauth2 authentication (`Bearer <token>`)",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "configuration",
+                        "in": "body",
+                        "description": "New configuration to add to the system",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/configuration"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Server Configurations"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/configuration"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/message"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/message"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "create:configurations"
+                        ]
+                    }
+                ]
             }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "default": {
-            "description": "Unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
         },
-        "security": [{
-          "oauth2": [
-            "modify:configurations"
-          ]
-        }]
-      },
-      "delete": {
-        "summary": "Delete Configuration",
-        "description": "Deletes configuration with name {name}",
-        "parameters": [{
-            "name": "Authentication",
-            "in": "header",
-            "description": "Bearer token for oauth2 authentication (`Bearer <token>`)",
-            "required": true,
-            "type": "string"
-        }, {
-          "name": "name",
-          "in": "path",
-          "description": "name of configuration to delete",
-          "required": true,
-          "type": "string"
-        }],
-        "tags": [
-          "Server"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/Error"
+        "/configurations/{name}": {
+            "put": {
+                "summary": "Update Configuration",
+                "description": "Updates configuration that has name {name}",
+                "parameters": [
+                    {
+                        "name": "Authentication",
+                        "in": "header",
+                        "description": "Bearer token for oauth2 authentication (`Bearer <token>`)",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "name of configuration to update",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "configuration",
+                        "in": "body",
+                        "description": "data to update configuration with",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/configuration"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Server Configurations"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/configuration"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/message"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/message"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "edit:configurations"
+                        ]
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "Delete Configuration",
+                "description": "Deletes configuration with name {name}",
+                "parameters": [
+                    {
+                        "name": "Authentication",
+                        "in": "header",
+                        "description": "Bearer token for oauth2 authentication (`Bearer <token>`)",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "name of configuration to delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "tags": [
+                    "Server Configurations"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/message"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/message"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "delete:configurations"
+                        ]
+                    }
+                ]
             }
-          },
-          "default": {
-            "description": "Unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        },
-        "security": [{
-          "oauth2": [
-            "delete:configurations"
-          ]
-        }]
-      }
-    }
-  },
-  "definitions": {
-    "UserIdentity": {
-      "required": [
-        "username",
-        "password"
-      ],
-      "properties": {
-        "username": {
-          "type": "string",
-          "description": "Unique identifier representing a user"
-        },
-        "password": {
-          "type": "string",
-          "description": "Password used to authenticate user"
         }
-      }
     },
-    "User": {
-      "required": [
-        "username"
-      ],
-      "properties": {
-        "username": {
-          "type": "string",
-          "description": "Unique identifier representing a user"
-        }
-      }
-    },
-    "Configuration": {
-      "required": [
-        "name",
-        "hostname",
-        "port",
-        "username"
-      ],
-      "properties": {
-        "name": {
-          "type": "string",
-          "description": "unique name identifying a configuration."
+    "definitions": {
+        "credentials": {
+            "required": [
+                "username",
+                "password"
+            ],
+            "properties": {
+                "username": {
+                    "type": "string",
+                    "description": "Unique identifier representing a user"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "Password used to authenticate user"
+                }
+            }
         },
-        "hostname": {
-          "type": "string",
-          "description": "hostname server is located"
+        "user": {
+            "required": [
+                "username"
+            ],
+            "properties": {
+                "username": {
+                    "type": "string",
+                    "description": "Unique identifier representing a user"
+                }
+            }
         },
-        "port": {
-          "type": "string",
-          "description": "port on which the server is listening"
+        "configuration": {
+            "required": [
+                "name",
+                "hostname",
+                "port",
+                "username"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "unique name identifying a configuration."
+                },
+                "hostname": {
+                    "type": "string",
+                    "description": "hostname server is located"
+                },
+                "port": {
+                    "type": "string",
+                    "description": "port on which the server is listening"
+                },
+                "username": {
+                    "type": "string",
+                    "description": "user who added configuration"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "more information about this server"
+                }
+            }
         },
-        "username": {
-          "type": "string",
-          "description": "user who added configuration"
-        },
-        "description": {
-          "type": "string",
-          "description": "more information about this server"
-        }
-      }
-    },
-    "Grant": {
-      "required": [
-        "access_token"
-      ],
-      "properties": {
-        "bearer_token": {
-          "type": "string",
-          "description": "Token for authenticating requests"
-        },
-        "refresh_token": {
-          "type": "string",
-          "description": "Token to request new bearer_token from /auth/token (not implemented)"
-        }
-      }
-    },
-    "Error": {
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32"
+        "grant": {
+            "required": [
+                "bearer_token"
+            ],
+            "properties": {
+                "bearer_token": {
+                    "type": "string",
+                    "description": "Token for authenticating requests"
+                },
+                "refresh_token": {
+                    "type": "string",
+                    "description": "Token to request new bearer_token from /auth/token (not implemented)"
+                }
+            }
         },
         "message": {
-          "type": "string"
-        },
-        "fields": {
-          "type": "string"
+            "required": [
+                "type"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "fields": {
+                    "type": "string"
+                }
+            }
         }
-      }
     }
-  }
 }
