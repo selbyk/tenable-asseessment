@@ -17,7 +17,7 @@ class Router {
   }
 
   mapRoute(method, regex, route) {
-    routeMap[method]['^'+regex.replace(/[\\$'"]/g, "\\$&")+'$'] = route;
+    routeMap[method]['^' + regex.replace(/[\\$'"]/g, "\\$&") + '$'] = route;
   }
 
   mapRoutes(routes) {
@@ -27,14 +27,18 @@ class Router {
   }
 
   findRoute(method, path) {
-     for(var regexStr of Object.keys(routeMap[method])){
-       let regex = new RegExp(regexStr, 'm');
-       console.log(regexStr,path);
-       if(regex.test(path)){
-         return routeMap[method][regexStr];
-       }
-     }
-     return () => ({statusCode: 400, headers: {}, body: 'Invalid Request'})
+    for (var regexStr of Object.keys(routeMap[method])) {
+      let regex = new RegExp(regexStr, 'm');
+      console.log(regexStr, path);
+      if (regex.test(path)) {
+        return routeMap[method][regexStr];
+      }
+    }
+    return () => ({
+      statusCode: 400,
+      headers: {},
+      body: 'Invalid Request'
+    })
   }
 }
 
@@ -42,17 +46,17 @@ class Router {
  * @module routed
  * @type {Singleton}
  */
- module.exports = {
-   getInstance: (function() { // BEGIN iife
-               var instance;
-               return function() {
-                   if (!instance) {
-                     instance = new Router();
-                   }
-                   return instance;
-               };
-        }()) // END iife
- };
+module.exports = {
+  getInstance: (function() { // BEGIN iife
+      var instance;
+      return function() {
+        if (!instance) {
+          instance = new Router();
+        }
+        return instance;
+      };
+    }()) // END iife
+};
 
 /**
  * Maps a RequestHandler to given request method and regex path

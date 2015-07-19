@@ -9,7 +9,7 @@ cat $1 | grep --quiet -i "\\\9" && {
   echo "Creating backup..."
   mv $1 $1.bak
   echo "Replacing invalid string..."
-  cat $1.bak | sed -r s/\\\\9//g | tee $1 1> /dev/null
+  cat $1.bak | sed -r s/\\\\9/\\\\9;/g | tee $1 1> /dev/null
   cat $1 | grep --quiet -i "\\\9" && {
     echo "CSS still invalid, sorry =/"
     echo "Replacing original file..."

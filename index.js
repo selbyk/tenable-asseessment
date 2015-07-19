@@ -72,11 +72,11 @@ function handleClientRequest(req, res) {
   var exchange = new Exchange(req, res);
   exchange.addHeader('Access-Control-Allow-Origin:', '*');
 
-  var routeTo = exchange.processRequest(req, res);
-
-  var route = router.findRoute(routeTo.method, routeTo.path);
+  var route = router.findRoute(exchange.req().method, exchange.req().path);
 
   exchange.handleResponse(route);
+
+  delete exchange;
 
   /*exchange.setBody({
     'dude': {
