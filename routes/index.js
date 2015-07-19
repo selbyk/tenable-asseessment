@@ -19,13 +19,11 @@ module.exports = function() {
   var routes = [{
     method: 'GET',
     regex: '/',
-    route: function(req, res) {
-      var body = 'Hello, world!';
-      res.writeHead(200, {
-        'Content-Length': body.length,
-        'Content-Type': 'text/plain'
-      });
-      res.end(body);
+    route: function(params, query, body) {
+      var payload = {
+        message: 'Hello, world!'
+      };
+      return {statusCode: 200, headers: {}, body: payload};
     }
   }];
 
@@ -43,12 +41,10 @@ module.exports = function() {
     });
   });
 
-
   routeFiles.forEach(function(file) {
     routes.push(require(file));
   });
   console.log(routes);
-
 
   return routes;
 }();

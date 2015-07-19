@@ -1,15 +1,11 @@
 var esClient = require('../../modules/es-client');
 
 module.exports = {
-  method: 'POST',
-  regex: '/auth/register',
+  method: 'GET',
+  regex: '/auth/me',
   route: function(params, query, body){
-    esClient.index('tenable', 'user', {
-      _id: body.username,
-      password: body.password
-    });
     var payload = {
-      message: 'fghfgh!'
+      message: 'het!'
     };
     return {statusCode: 200, headers: {}, body: payload};
   }
