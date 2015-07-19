@@ -37,7 +37,8 @@ so that I can copy over my draft
 in every route, so I started working on a new module, `retort`, that takes care of some
 heavy lifting so the router only has to deal with the information it needs
  - Wrote a couple shell scripts to help with housekeeping
- - Have to fix routes to work with `retort`...
+ - Have to fix routes to work with `retort`... then I can start actually implementing
+the features
 
 References Used:
 - [https://nodejs.org/api/](https://nodejs.org/api/)
