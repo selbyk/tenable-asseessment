@@ -29,7 +29,15 @@ show the learning phase I use on projects what are uncharted territory for me
  - Started a new git repository with only the Swagger definition and markdown files
 so that I can copy over my draft
  - Got the Router documented and working with a hello world route, now I think all that's left is the ElasticSearch client and to define the routes.
- - I also found a bug in some guy's small project I'm using to generate Bootstrap code from the Swagger specs.  It's bizarrely tiny and ridiculous. 2 extra chars in 10000 lines of CSS. -.-' https://github.com/nknapp/swagger-to-html/issues/3
+ - I also found a bug in some guy's small project I'm using to generate Bootstrap code from the Swagger specs.  It's bizarrely tiny and ridiculous. 2 extra chars in 10000 lines of CSS. -.-' https://github.com/nknapp/bootprint-swagger/issues/12
+- Day 4
+ - Copied over basic ElasticSearch client I started on day one
+ - Revised API spec again, it's getting pretty polished
+ - Realized I don't want to deal with the native Node.js response/request APIs in
+in every route, so I started working on a new module, `retort`, that takes care of some
+heavy lifting so the router only has to deal with the information it needs
+ - Wrote a couple shell scripts to help with housekeeping
+ - Have to fix routes to work with `retort`...
 
 References Used:
 - [https://nodejs.org/api/](https://nodejs.org/api/)
