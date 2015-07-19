@@ -43,9 +43,12 @@ module.exports = function() {
     });
   });
 
+
   routeFiles.forEach(function(file) {
     routes.push(require(file));
   });
+  console.log(routes);
+
 
   return routes;
 }();
