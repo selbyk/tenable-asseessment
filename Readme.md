@@ -44,3 +44,7 @@ References Used:
 - [https://nodejs.org/api/](https://nodejs.org/api/)
 - [Nessus 5.0 REST Protocol
 Specification [pdf]](http://static.tenable.com/documentation/nessus_5.0_XMLRPC_protocol_guide.pdf)
+- [SWAGGER RESTFUL API DOCUMENTATION SPECIFICATION](http://swagger.io/specification/)
+- [Learning JavaScript Design Patterns](http://addyosmani.com/resources/essentialjsdesignpatterns/book/)
+- [Using ES6 Harmony with NodeJS](https://www.airpair.com/javascript/posts/using-es6-harmony-with-nodejs)
+- [MDN JavaScript reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference)
