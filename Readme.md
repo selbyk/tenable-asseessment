@@ -39,6 +39,7 @@ heavy lifting so the router only has to deal with the information it needs
  - Wrote a couple shell scripts to help with housekeeping
  - Have to fix routes to work with `retort`... then I can start actually implementing
 the features
+ - Decided to try out es6.  Not all features avaliable yet. *cough* importing modules *cough*  Thought compiling node/iojs would do the trick since people claimed it worked on the dev branch, bu.  Apparently they're waiting on Google's v8 so I decided to pull v8's master branch and recompile. Tried compiling from the owner of the Chromium issue with no luck, I think it's gonna be a while before es6 modules see the light of day. http://code.google.com/p/v8/issues/detail?id=1569&q=owner%3Aadamk&colspec=ID%20Type%20Status%20Priority%20Owner%20Summary%20HW%20OS%20Area%20Stars
 
 References Used:
 - [https://nodejs.org/api/](https://nodejs.org/api/)
