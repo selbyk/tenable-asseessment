@@ -1,6 +1,6 @@
 /**
-  * Define global types for documentation
-  */
+ * Define global types for documentation
+ */
 
 /** Function used to handle a request
  * @name RequestHandler
@@ -17,23 +17,25 @@
  * @property {RequestHandler} - RequestHandler function for the route
  */
 
- // Require needed core Node.js modules
- var http = require('http');
- var https = require('https');
- var fs = require('fs');
+// Require needed core Node.js modules
+var http = require('http');
+var https = require('https');
+var fs = require('fs');
 
- // Configure https keys
- var httpsOptions = {
-   key: fs.readFileSync('./certs/key.pem'),
-   cert: fs.readFileSync('./certs/cert.pem'),
-   requestCert: false,
-   rejectUnauthorized: false
- };
+// Configure https keys
+var httpsOptions = {
+  key: fs.readFileSync('./certs/key.pem'),
+  cert: fs.readFileSync('./certs/cert.pem'),
+  requestCert: false,
+  rejectUnauthorized: false
+};
 
- // Require Router module, routes, and initalize routes in the Router
- var Router = require('./modules/router');
- var routes = require('./routes');
- Router.mapRoutes(routes);
+var retort = require('./modules/retort');
+
+// Require Router module, routes, and initalize routes in the Router
+var Router = require('./modules/router');
+var routes = require('./routes');
+Router.mapRoutes(routes);
 
 /**
  * Handles all errors thrown by the servers.
@@ -56,9 +58,23 @@ function handleSeverError(err) {
  * @type {RequestHandler}
  */
 function handleClientRequest(req, res) {
+  // Just let me know what's going on.
   console.log(req.method + " " + req.url);
+  var response = new retort(req, res);
+  response.addHeader('Access-Control-Allow-Origin:', '*');
+
+  response.setBody({
+    'dude': {
+      ths: 'awesome'
+    }
+  });
+
+  response.setStatus(200);
+
+  response.send();
+
   // Pass request to router for handling
-  Router.routeRequest(req,res);
+  //Router.routeRequest(req,res);
   /*var body = 'Hello, world.';
   res.writeHead(200, {
     'Content-Length': body.length,
