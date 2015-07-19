@@ -21,6 +21,10 @@
 var http = require('http');
 var https = require('https');
 var fs = require('fs');
+var Router = require('./modules/router');
+var Exchange = require('./modules/exchange.js');
+
+var router = Router.getInstance();
 
 // Configure https keys
 var httpsOptions = {
@@ -30,12 +34,15 @@ var httpsOptions = {
   rejectUnauthorized: false
 };
 
-var retort = require('./modules/retort');
+// Create our servers
+var httpServer = http.createServer();
+var httpsServer = https.createServer(httpsOptions);
+
 
 // Require Router module, routes, and initalize routes in the Router
-var Router = require('./modules/router');
+//var Router = require('./modules/router');
 var routes = require('./routes');
-Router.mapRoutes(routes);
+router.mapRoutes(routes);
 
 /**
  * Handles all errors thrown by the servers.
@@ -43,11 +50,13 @@ Router.mapRoutes(routes);
  * @param {Object} err - The error that was thrown.
  */
 function handleSeverError(err) {
-  if (err.code == 'EADDRINUSE') {
+  if (err.code === 'EADDRINUSE') {
     console.log('Address in use, retrying...');
     setTimeout(function() {
-      server.close();
-      server.listen(PORT, HOST);
+      httpServer.close();
+      httpServer.listen(4443);
+      httpsServer.close();
+      httpsServer.listen(4444);
     }, 1000);
   }
 }
@@ -60,18 +69,24 @@ function handleSeverError(err) {
 function handleClientRequest(req, res) {
   // Just let me know what's going on.
   console.log(req.method + " " + req.url);
-  var response = new retort(req, res);
-  response.addHeader('Access-Control-Allow-Origin:', '*');
+  var exchange = new Exchange(req, res);
+  exchange.addHeader('Access-Control-Allow-Origin:', '*');
 
-  response.setBody({
+  var routeTo = exchange.processRequest(req, res);
+
+  var route = router.findRoute(routeTo.method, routeTo.path);
+
+  exchange.handleResponse(route);
+
+  /*exchange.setBody({
     'dude': {
       ths: 'awesome'
     }
-  });
+  });*/
 
-  response.setStatus(200);
+  //exchange.setStatus(200);
 
-  response.send();
+  //exchange.send();
 
   // Pass request to router for handling
   //Router.routeRequest(req,res);
@@ -82,10 +97,6 @@ function handleClientRequest(req, res) {
   });
   res.end(body);*/
 }
-
-// Create our servers
-var httpServer = http.createServer();
-var httpsServer = https.createServer(httpsOptions);
 
 httpsServer.on('error', handleSeverError);
 httpsServer.on('request', handleClientRequest);
