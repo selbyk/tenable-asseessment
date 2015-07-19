@@ -49,3 +49,4 @@ Specification [pdf]](http://static.tenable.com/documentation/nessus_5.0_XMLRPC_p
 - [Learning JavaScript Design Patterns](http://addyosmani.com/resources/essentialjsdesignpatterns/book/)
 - [Using ES6 Harmony with NodeJS](https://www.airpair.com/javascript/posts/using-es6-harmony-with-nodejs)
 - [MDN JavaScript reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference)
+- [Elasticsearch Reference](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html)
