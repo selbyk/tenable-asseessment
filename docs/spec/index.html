@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="main.css">
+    <meta charset="UTF-8">
+    <title>Asce: Authenticated Server Configurations with ElasticSearch</title>
+</head>
+<body>
+<div class="container">
+    <h1>Asce: Authenticated Server Configurations with ElasticSearch</h1>
+<p>Authenticate and all the configurations are belong to you.</p>
+
+<h2>Summary</h2>
+<table class="table table-bordered table-condensed swagger--summary">
+    <thead>
+    <tr>
+        <th>Path</th>
+        <th>Method</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+            <tr>
+                    <td class="swagger--summary-path" rowspan="1">
+                        <a href="#path--auth-identify">/auth/identify</a>
+                    </td>
+                <td>
+                    <a href="#method--auth-identify-post">POST</a>
+                </td>
+                <td>
+                    User Authentication
+                </td>
+            </tr>
+            <tr>
+                    <td class="swagger--summary-path" rowspan="1">
+                        <a href="#path--auth-me">/auth/me</a>
+                    </td>
+                <td>
+                    <a href="#method--auth-me-get">GET</a>
+                </td>
+                <td>
+                    User Profile
+                </td>
+            </tr>
+            <tr>
+                    <td class="swagger--summary-path" rowspan="1">
+                        <a href="#path--auth-register">/auth/register</a>
+                    </td>
+                <td>
+                    <a href="#method--auth-register-post">POST</a>
+                </td>
+                <td>
+                    User Registration
+                </td>
+            </tr>
+            <tr>
+                    <td class="swagger--summary-path" rowspan="1">
+                        <a href="#path--auth-revoke">/auth/revoke</a>
+                    </td>
+                <td>
+                    <a href="#method--auth-revoke-get">GET</a>
+                </td>
+                <td>
+                    Revoke User&apos;s Access Tokens
+                </td>
+            </tr>
+            <tr>
+                    <td class="swagger--summary-path" rowspan="2">
+                        <a href="#path--configurations">/configurations</a>
+                    </td>
+                <td>
+                    <a href="#method--configurations-get">GET</a>
+                </td>
+                <td>
+                    List Configurations
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="#method--configurations-post">POST</a>
+                </td>
+                <td>
+                    Create Configuration
+                </td>
+            </tr>
+            <tr>
+                    <td class="swagger--summary-path" rowspan="2">
+                        <a href="#path--configurations--name-">/configurations/{name}</a>
+                    </td>
+                <td>
+                    <a href="#method--configurations--name--delete">DELETE</a>
+                </td>
+                <td>
+                    Delete Configuration
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="#method--configurations--name--put">PUT</a>
+                </td>
+                <td>
+                    Update Configuration
+                </td>
+            </tr>
+    </tbody>
+</table>
+
+
+    <h2>Security</h2>
+
+        <div id="security-definition-oauth2" class="panel panel-security-definition panel-security-definition-oauth2">
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="security-name">oauth2</span> <strong><span class="sw-security-definition-oauth2"></span></strong></h3>
+            </div>
+            <div class="panel-body">
+                <section class="sw-security-properties">
+                        <dt>
+                        </dt>
+                        <dt>
+                                <span class="security-property-name">scopes:</span>
+                                <span class="security-property-type">[object Object]</span>
+                        </dt>
+                        <dt>
+                                <span class="security-property-name">flow:</span>
+                                <span class="security-property-type">implicit</span>
+                        </dt>
+                        <dt>
+                                <span class="security-property-name">authorizationUrl:</span>
+                                <span class="security-property-type">/auth/identify</span>
+                        </dt>
+                </section>
+            </div>
+        </div>
+
+<h2>Paths</h2>
+
+    
+<span id="path-/auth/identify"></span>
+    <div id="method--auth-identify-post" class="swagger--panel-method-post panel">
+    <div class="panel-heading">
+        <div class="method-summary">User Authentication</div>
+        <h3 class="panel-title"><span class="method-name">POST</span> <strong>/auth/identify</strong></h3>
+    </div>
+    <div class="panel-body">
+        <section class="sw-method-description">
+            Return token(s) granting access for a user if proper credentials are provided.
+        </section>
+        
+        
+        
+    <section class="sw-response-body">
+        <p></p>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="sw-response-code"></th>
+                <th class="sw-response-description"></th>
+                <th class="sw-response-data-type hidden-xs hidden-sm"></th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>200</td>
+                    <td>
+                        <div class="sw-response-description-text">
+                            Authentication Successful
+                        </div>
+                        <section class="visible-xs visible-sm">
+                            
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/grant">grant</a>
+
+    </div>
+</div>                        </section>
+                    </td>
+                    <td class="hidden-xs hidden-sm">
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/grant">grant</a>
+
+    </div>
+</div></td>
+                </tr>
+                <tr>
+                    <td>401</td>
+                    <td>
+                        <div class="sw-response-description-text">
+                            Unauthorized
+                        </div>
+                        <section class="visible-xs visible-sm">
+                            
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div>                        </section>
+                    </td>
+                    <td class="hidden-xs hidden-sm">
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div></td>
+                </tr>
+                <tr>
+                    <td>default</td>
+                    <td>
+                        <div class="sw-response-description-text">
+                            Unexpected error
+                        </div>
+                        <section class="visible-xs visible-sm">
+                            
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div>                        </section>
+                    </td>
+                    <td class="hidden-xs hidden-sm">
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+            </div>
+</div>    
+<span id="path-/auth/me"></span>
+    <div id="method--auth-me-get" class="swagger--panel-method-get panel">
+    <div class="panel-heading">
+        <div class="method-summary">User Profile</div>
+        <h3 class="panel-title"><span class="method-name">GET</span> <strong>/auth/me</strong></h3>
+    </div>
+    <div class="panel-body">
+        <section class="sw-method-description">
+            The User Profile endpoint returns information about the Uber user that has authorized with the application.
+        </section>
+        
+        
+    <section class="sw-request-params">
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="sw-param-name"></th>
+                <th class="sw-param-description"></th>
+                <th class="sw-param-type"></th>
+                <th class="sw-param-data-type"></th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Authentication
+                            <span class="json-property-required"></span>
+                        </td>
+                    <td>Bearer token for oauth2 authentication (<code>Bearer &lt;token&gt;</code>)</td>
+                    <td>header</td>
+                    <td>
+                        <span class="json-property-type">
+        string
+</span>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+        
+    <section class="sw-response-body">
+        <p></p>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="sw-response-code"></th>
+                <th class="sw-response-description"></th>
+                <th class="sw-response-data-type hidden-xs hidden-sm"></th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>200</td>
+                    <td>
+                        <div class="sw-response-description-text">
+                            OK
+                        </div>
+                        <section class="visible-xs visible-sm">
+                            
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/user">user</a>
+
+    </div>
+</div>                        </section>
+                    </td>
+                    <td class="hidden-xs hidden-sm">
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/user">user</a>
+
+    </div>
+</div></td>
+                </tr>
+                <tr>
+                    <td>401</td>
+                    <td>
+                        <div class="sw-response-description-text">
+                            Unauthorized
+                        </div>
+                        <section class="visible-xs visible-sm">
+                            
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div>                        </section>
+                    </td>
+                    <td class="hidden-xs hidden-sm">
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div></td>
+                </tr>
+                <tr>
+                    <td>default</td>
+                    <td>
+                        <div class="sw-response-description-text">
+                            Unexpected error
+                        </div>
+                        <section class="visible-xs visible-sm">
+                            
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div>                        </section>
+                    </td>
+                    <td class="hidden-xs hidden-sm">
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+            <section class="sw-request-security">
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="sw-request-security-schema"></th>
+                <th class="sw-request-security-scopes"></th>
+            </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td><a href="#security-definition-oauth2">oauth2</a></td>
+                        <td>
+                                view:authenticated
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+    </section>
+    </div>
+</div>    
+<span id="path-/auth/register"></span>
+    <div id="method--auth-register-post" class="swagger--panel-method-post panel">
+    <div class="panel-heading">
+        <div class="method-summary">User Registration</div>
+        <h3 class="panel-title"><span class="method-name">POST</span> <strong>/auth/register</strong></h3>
+    </div>
+    <div class="panel-body">
+        <section class="sw-method-description">
+            Return message about status of registration
+        </section>
+        
+        
+        
+    <section class="sw-response-body">
+        <p></p>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="sw-response-code"></th>
+                <th class="sw-response-description"></th>
+                <th class="sw-response-data-type hidden-xs hidden-sm"></th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>200</td>
+                    <td>
+                        <div class="sw-response-description-text">
+                            New account creation successful
+                        </div>
+                        <section class="visible-xs visible-sm">
+                            
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div>                        </section>
+                    </td>
+                    <td class="hidden-xs hidden-sm">
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div></td>
+                </tr>
+                <tr>
+                    <td>422</td>
+                    <td>
+                        <div class="sw-response-description-text">
+                            Unprocessable Entity
+                        </div>
+                        <section class="visible-xs visible-sm">
+                            
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div>                        </section>
+                    </td>
+                    <td class="hidden-xs hidden-sm">
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div></td>
+                </tr>
+                <tr>
+                    <td>default</td>
+                    <td>
+                        <div class="sw-response-description-text">
+                            Unexpected error
+                        </div>
+                        <section class="visible-xs visible-sm">
+                            
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div>                        </section>
+                    </td>
+                    <td class="hidden-xs hidden-sm">
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+            </div>
+</div>    
+<span id="path-/auth/revoke"></span>
+    <div id="method--auth-revoke-get" class="swagger--panel-method-get panel">
+    <div class="panel-heading">
+        <div class="method-summary">Revoke User&apos;s Access Tokens</div>
+        <h3 class="panel-title"><span class="method-name">GET</span> <strong>/auth/revoke</strong></h3>
+    </div>
+    <div class="panel-body">
+        <section class="sw-method-description">
+            The access token(s) for the authenticated user become invalid, and the user must reauthenticate to receive valid tokens.
+        </section>
+        
+        
+    <section class="sw-request-params">
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="sw-param-name"></th>
+                <th class="sw-param-description"></th>
+                <th class="sw-param-type"></th>
+                <th class="sw-param-data-type"></th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Authentication
+                            <span class="json-property-required"></span>
+                        </td>
+                    <td>Bearer token for oauth2 authentication (<code>Bearer &lt;token&gt;</code>)</td>
+                    <td>header</td>
+                    <td>
+                        <span class="json-property-type">
+        string
+</span>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+        
+    <section class="sw-response-body">
+        <p></p>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="sw-response-code"></th>
+                <th class="sw-response-description"></th>
+                <th class="sw-response-data-type hidden-xs hidden-sm"></th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>200</td>
+                    <td>
+                        <div class="sw-response-description-text">
+                            Access Revoked Successfully
+                        </div>
+                        <section class="visible-xs visible-sm">
+                            
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div>                        </section>
+                    </td>
+                    <td class="hidden-xs hidden-sm">
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div></td>
+                </tr>
+                <tr>
+                    <td>401</td>
+                    <td>
+                        <div class="sw-response-description-text">
+                            Unauthorized
+                        </div>
+                        <section class="visible-xs visible-sm">
+                            
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div>                        </section>
+                    </td>
+                    <td class="hidden-xs hidden-sm">
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div></td>
+                </tr>
+                <tr>
+                    <td>default</td>
+                    <td>
+                        <div class="sw-response-description-text">
+                            Unexpected error
+                        </div>
+                        <section class="visible-xs visible-sm">
+                            
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div>                        </section>
+                    </td>
+                    <td class="hidden-xs hidden-sm">
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+            <section class="sw-request-security">
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="sw-request-security-schema"></th>
+                <th class="sw-request-security-scopes"></th>
+            </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td><a href="#security-definition-oauth2">oauth2</a></td>
+                        <td>
+                                view:authenticated
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+    </section>
+    </div>
+</div>    
+<span id="path-/configurations"></span>
+    <div id="method--configurations-get" class="swagger--panel-method-get panel">
+    <div class="panel-heading">
+        <div class="method-summary">List Configurations</div>
+        <h3 class="panel-title"><span class="method-name">GET</span> <strong>/configurations</strong></h3>
+    </div>
+    <div class="panel-body">
+        <section class="sw-method-description">
+            List of all configurations stored in the database
+        </section>
+        
+        
+    <section class="sw-request-params">
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="sw-param-name"></th>
+                <th class="sw-param-description"></th>
+                <th class="sw-param-type"></th>
+                <th class="sw-param-data-type"></th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Authentication
+                            <span class="json-property-required"></span>
+                        </td>
+                    <td>Bearer token for oauth2 authentication (<code>Bearer &lt;token&gt;</code>)</td>
+                    <td>header</td>
+                    <td>
+                        <span class="json-property-type">
+        string
+</span>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>offset
+</td>
+                    <td>Offset the list of returned results by this amount. Default is 0.</td>
+                    <td>query</td>
+                    <td>
+                        <span class="json-property-type">
+        integer
+</span>
+    <span class="json-property-format">(int32)</span>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>limit
+</td>
+                    <td>Number of items to retrieve. Default is 10, maximum is 100.</td>
+                    <td>query</td>
+                    <td>
+                        <span class="json-property-type">
+        integer
+</span>
+    <span class="json-property-format">(int32)</span>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>sort
+</td>
+                    <td>Keys to sort list by, formatted as (key1,-key2) and &apos;-&apos; denoting that the key should be sorted in decending order.</td>
+                    <td>query</td>
+                    <td>
+                        <span class="json-property-type">
+        string
+</span>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+        
+    <section class="sw-response-body">
+        <p></p>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="sw-response-code"></th>
+                <th class="sw-response-description"></th>
+                <th class="sw-response-data-type hidden-xs hidden-sm"></th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>200</td>
+                    <td>
+                        <div class="sw-response-description-text">
+                            OK
+                        </div>
+                        <section class="visible-xs visible-sm">
+                            
+    <div class="panel panel-definition">
+    <div class="panel-body">
+        
+    <section class="json-schema-array-items">
+    <div class="json-inner-schema">
+            <a class="json-schema-ref" href="#/definitions/configuration">configuration</a>
+
+    </div>
+</section>    </div>
+</div>                        </section>
+                    </td>
+                    <td class="hidden-xs hidden-sm">
+    <div class="panel panel-definition">
+    <div class="panel-body">
+        
+    <section class="json-schema-array-items">
+    <div class="json-inner-schema">
+            <a class="json-schema-ref" href="#/definitions/configuration">configuration</a>
+
+    </div>
+</section>    </div>
+</div></td>
+                </tr>
+                <tr>
+                    <td>401</td>
+                    <td>
+                        <div class="sw-response-description-text">
+                            Unauthorized
+                        </div>
+                        <section class="visible-xs visible-sm">
+                            
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div>                        </section>
+                    </td>
+                    <td class="hidden-xs hidden-sm">
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div></td>
+                </tr>
+                <tr>
+                    <td>default</td>
+                    <td>
+                        <div class="sw-response-description-text">
+                            Unexpected error
+                        </div>
+                        <section class="visible-xs visible-sm">
+                            
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div>                        </section>
+                    </td>
+                    <td class="hidden-xs hidden-sm">
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+            <section class="sw-request-security">
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="sw-request-security-schema"></th>
+                <th class="sw-request-security-scopes"></th>
+            </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td><a href="#security-definition-oauth2">oauth2</a></td>
+                        <td>
+                                view:configurations
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+    </section>
+    </div>
+</div>    <div id="method--configurations-post" class="swagger--panel-method-post panel">
+    <div class="panel-heading">
+        <div class="method-summary">Create Configuration</div>
+        <h3 class="panel-title"><span class="method-name">POST</span> <strong>/configurations</strong></h3>
+    </div>
+    <div class="panel-body">
+        <section class="sw-method-description">
+            Creates a new configuration
+        </section>
+        
+        
+    <section class="sw-request-params">
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="sw-param-name"></th>
+                <th class="sw-param-description"></th>
+                <th class="sw-param-type"></th>
+                <th class="sw-param-data-type"></th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Authentication
+                            <span class="json-property-required"></span>
+                        </td>
+                    <td>Bearer token for oauth2 authentication (<code>Bearer &lt;token&gt;</code>)</td>
+                    <td>header</td>
+                    <td>
+                        <span class="json-property-type">
+        string
+</span>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+        
+    <section class="sw-response-body">
+        <p></p>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="sw-response-code"></th>
+                <th class="sw-response-description"></th>
+                <th class="sw-response-data-type hidden-xs hidden-sm"></th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>200</td>
+                    <td>
+                        <div class="sw-response-description-text">
+                            OK
+                        </div>
+                        <section class="visible-xs visible-sm">
+                            
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/configuration">configuration</a>
+
+    </div>
+</div>                        </section>
+                    </td>
+                    <td class="hidden-xs hidden-sm">
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/configuration">configuration</a>
+
+    </div>
+</div></td>
+                </tr>
+                <tr>
+                    <td>401</td>
+                    <td>
+                        <div class="sw-response-description-text">
+                            Unauthorized
+                        </div>
+                        <section class="visible-xs visible-sm">
+                            
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div>                        </section>
+                    </td>
+                    <td class="hidden-xs hidden-sm">
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div></td>
+                </tr>
+                <tr>
+                    <td>default</td>
+                    <td>
+                        <div class="sw-response-description-text">
+                            Unexpected error
+                        </div>
+                        <section class="visible-xs visible-sm">
+                            
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div>                        </section>
+                    </td>
+                    <td class="hidden-xs hidden-sm">
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+            <section class="sw-request-security">
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="sw-request-security-schema"></th>
+                <th class="sw-request-security-scopes"></th>
+            </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td><a href="#security-definition-oauth2">oauth2</a></td>
+                        <td>
+                                create:configurations
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+    </section>
+    </div>
+</div>    
+<span id="path-/configurations/{name}"></span>
+    <div id="method--configurations--name--delete" class="swagger--panel-method-delete panel">
+    <div class="panel-heading">
+        <div class="method-summary">Delete Configuration</div>
+        <h3 class="panel-title"><span class="method-name">DELETE</span> <strong>/configurations/{name}</strong></h3>
+    </div>
+    <div class="panel-body">
+        <section class="sw-method-description">
+            Deletes configuration with name {name}
+        </section>
+        
+        
+    <section class="sw-request-params">
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="sw-param-name"></th>
+                <th class="sw-param-description"></th>
+                <th class="sw-param-type"></th>
+                <th class="sw-param-data-type"></th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Authentication
+                            <span class="json-property-required"></span>
+                        </td>
+                    <td>Bearer token for oauth2 authentication (<code>Bearer &lt;token&gt;</code>)</td>
+                    <td>header</td>
+                    <td>
+                        <span class="json-property-type">
+        string
+</span>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>name
+                            <span class="json-property-required"></span>
+                        </td>
+                    <td>name of configuration to delete</td>
+                    <td>path</td>
+                    <td>
+                        <span class="json-property-type">
+        string
+</span>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+        
+    <section class="sw-response-body">
+        <p></p>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="sw-response-code"></th>
+                <th class="sw-response-description"></th>
+                <th class="sw-response-data-type hidden-xs hidden-sm"></th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>200</td>
+                    <td>
+                        <div class="sw-response-description-text">
+                            OK
+                        </div>
+                        <section class="visible-xs visible-sm">
+                            
+                        </section>
+                    </td>
+                    <td class="hidden-xs hidden-sm">
+</td>
+                </tr>
+                <tr>
+                    <td>401</td>
+                    <td>
+                        <div class="sw-response-description-text">
+                            Unauthorized
+                        </div>
+                        <section class="visible-xs visible-sm">
+                            
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div>                        </section>
+                    </td>
+                    <td class="hidden-xs hidden-sm">
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div></td>
+                </tr>
+                <tr>
+                    <td>default</td>
+                    <td>
+                        <div class="sw-response-description-text">
+                            Unexpected error
+                        </div>
+                        <section class="visible-xs visible-sm">
+                            
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div>                        </section>
+                    </td>
+                    <td class="hidden-xs hidden-sm">
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+            <section class="sw-request-security">
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="sw-request-security-schema"></th>
+                <th class="sw-request-security-scopes"></th>
+            </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td><a href="#security-definition-oauth2">oauth2</a></td>
+                        <td>
+                                delete:configurations
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+    </section>
+    </div>
+</div>    <div id="method--configurations--name--put" class="swagger--panel-method-put panel">
+    <div class="panel-heading">
+        <div class="method-summary">Update Configuration</div>
+        <h3 class="panel-title"><span class="method-name">PUT</span> <strong>/configurations/{name}</strong></h3>
+    </div>
+    <div class="panel-body">
+        <section class="sw-method-description">
+            Updates configuration that has name {name}
+        </section>
+        
+        
+    <section class="sw-request-params">
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="sw-param-name"></th>
+                <th class="sw-param-description"></th>
+                <th class="sw-param-type"></th>
+                <th class="sw-param-data-type"></th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Authentication
+                            <span class="json-property-required"></span>
+                        </td>
+                    <td>Bearer token for oauth2 authentication (<code>Bearer &lt;token&gt;</code>)</td>
+                    <td>header</td>
+                    <td>
+                        <span class="json-property-type">
+        string
+</span>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>name
+                            <span class="json-property-required"></span>
+                        </td>
+                    <td>name of configuration to update</td>
+                    <td>path</td>
+                    <td>
+                        <span class="json-property-type">
+        string
+</span>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+        
+    <section class="sw-response-body">
+        <p></p>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="sw-response-code"></th>
+                <th class="sw-response-description"></th>
+                <th class="sw-response-data-type hidden-xs hidden-sm"></th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>200</td>
+                    <td>
+                        <div class="sw-response-description-text">
+                            OK
+                        </div>
+                        <section class="visible-xs visible-sm">
+                            
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/configuration">configuration</a>
+
+    </div>
+</div>                        </section>
+                    </td>
+                    <td class="hidden-xs hidden-sm">
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/configuration">configuration</a>
+
+    </div>
+</div></td>
+                </tr>
+                <tr>
+                    <td>401</td>
+                    <td>
+                        <div class="sw-response-description-text">
+                            Unauthorized
+                        </div>
+                        <section class="visible-xs visible-sm">
+                            
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div>                        </section>
+                    </td>
+                    <td class="hidden-xs hidden-sm">
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div></td>
+                </tr>
+                <tr>
+                    <td>default</td>
+                    <td>
+                        <div class="sw-response-description-text">
+                            Unexpected error
+                        </div>
+                        <section class="visible-xs visible-sm">
+                            
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div>                        </section>
+                    </td>
+                    <td class="hidden-xs hidden-sm">
+    <div class="panel panel-definition">
+    <div class="panel-body">
+            <a class="json-schema-ref" href="#/definitions/message">message</a>
+
+    </div>
+</div></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+            <section class="sw-request-security">
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="sw-request-security-schema"></th>
+                <th class="sw-request-security-scopes"></th>
+            </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td><a href="#security-definition-oauth2">oauth2</a></td>
+                        <td>
+                                edit:configurations
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+    </section>
+    </div>
+</div>
+
+<h2>Definitions</h2>
+
+    
+    <div class="panel panel-definition">
+        <div class="panel-heading">
+                <h3 class="panel-title"><a name="/definitions/credentials"></a>credentials:
+                    <span class="json-property-type"><span class="json-property-type">
+        object
+</span>
+
+</span>
+                </h3>
+        </div>
+    <div class="panel-body">
+            <section class="json-schema-properties">
+    <dl>
+            <dt>
+                <span class="json-property-name">username:</span>
+                <span class="json-property-type">
+        string
+</span>
+
+                    <span class="json-property-required"></span>
+            </dt>
+            <dd>
+                Unique identifier representing a user
+                <div class="json-inner-schema">
+                    
+                </div>
+            </dd>
+            <dt>
+                <span class="json-property-name">password:</span>
+                <span class="json-property-type">
+        string
+</span>
+
+                    <span class="json-property-required"></span>
+            </dt>
+            <dd>
+                Password used to authenticate user
+                <div class="json-inner-schema">
+                    
+                </div>
+            </dd>
+    </dl>
+</section>
+
+    </div>
+</div>    
+    <div class="panel panel-definition">
+        <div class="panel-heading">
+                <h3 class="panel-title"><a name="/definitions/user"></a>user:
+                    <span class="json-property-type"><span class="json-property-type">
+        object
+</span>
+
+</span>
+                </h3>
+        </div>
+    <div class="panel-body">
+            <section class="json-schema-properties">
+    <dl>
+            <dt>
+                <span class="json-property-name">username:</span>
+                <span class="json-property-type">
+        string
+</span>
+
+                    <span class="json-property-required"></span>
+            </dt>
+            <dd>
+                Unique identifier representing a user
+                <div class="json-inner-schema">
+                    
+                </div>
+            </dd>
+    </dl>
+</section>
+
+    </div>
+</div>    
+    <div class="panel panel-definition">
+        <div class="panel-heading">
+                <h3 class="panel-title"><a name="/definitions/configuration"></a>configuration:
+                    <span class="json-property-type"><span class="json-property-type">
+        object
+</span>
+
+</span>
+                </h3>
+        </div>
+    <div class="panel-body">
+            <section class="json-schema-properties">
+    <dl>
+            <dt>
+                <span class="json-property-name">name:</span>
+                <span class="json-property-type">
+        string
+</span>
+
+                    <span class="json-property-required"></span>
+            </dt>
+            <dd>
+                unique name identifying a configuration.
+                <div class="json-inner-schema">
+                    
+                </div>
+            </dd>
+            <dt>
+                <span class="json-property-name">hostname:</span>
+                <span class="json-property-type">
+        string
+</span>
+
+                    <span class="json-property-required"></span>
+            </dt>
+            <dd>
+                hostname server is located
+                <div class="json-inner-schema">
+                    
+                </div>
+            </dd>
+            <dt>
+                <span class="json-property-name">port:</span>
+                <span class="json-property-type">
+        string
+</span>
+
+                    <span class="json-property-required"></span>
+            </dt>
+            <dd>
+                port on which the server is listening
+                <div class="json-inner-schema">
+                    
+                </div>
+            </dd>
+            <dt>
+                <span class="json-property-name">username:</span>
+                <span class="json-property-type">
+        string
+</span>
+
+                    <span class="json-property-required"></span>
+            </dt>
+            <dd>
+                user who added configuration
+                <div class="json-inner-schema">
+                    
+                </div>
+            </dd>
+            <dt>
+                <span class="json-property-name">description:</span>
+                <span class="json-property-type">
+        string
+</span>
+
+            </dt>
+            <dd>
+                more information about this server
+                <div class="json-inner-schema">
+                    
+                </div>
+            </dd>
+    </dl>
+</section>
+
+    </div>
+</div>    
+    <div class="panel panel-definition">
+        <div class="panel-heading">
+                <h3 class="panel-title"><a name="/definitions/grant"></a>grant:
+                    <span class="json-property-type"><span class="json-property-type">
+        object
+</span>
+
+</span>
+                </h3>
+        </div>
+    <div class="panel-body">
+            <section class="json-schema-properties">
+    <dl>
+            <dt>
+                <span class="json-property-name">bearer_token:</span>
+                <span class="json-property-type">
+        string
+</span>
+
+                    <span class="json-property-required"></span>
+            </dt>
+            <dd>
+                Token for authenticating requests
+                <div class="json-inner-schema">
+                    
+                </div>
+            </dd>
+            <dt>
+                <span class="json-property-name">refresh_token:</span>
+                <span class="json-property-type">
+        string
+</span>
+
+            </dt>
+            <dd>
+                Token to request new bearer_token from /auth/token (not implemented)
+                <div class="json-inner-schema">
+                    
+                </div>
+            </dd>
+    </dl>
+</section>
+
+    </div>
+</div>    
+    <div class="panel panel-definition">
+        <div class="panel-heading">
+                <h3 class="panel-title"><a name="/definitions/message"></a>message:
+                    <span class="json-property-type"><span class="json-property-type">
+        object
+</span>
+
+</span>
+                </h3>
+        </div>
+    <div class="panel-body">
+            <section class="json-schema-properties">
+    <dl>
+            <dt>
+                <span class="json-property-name">type:</span>
+                <span class="json-property-type">
+        string
+</span>
+
+                    <span class="json-property-required"></span>
+            </dt>
+            <dd>
+                
+                <div class="json-inner-schema">
+                    
+                </div>
+            </dd>
+            <dt>
+                <span class="json-property-name">code:</span>
+                <span class="json-property-type">
+        integer
+</span>
+    <span class="json-property-format">(int32)</span>
+
+            </dt>
+            <dd>
+                
+                <div class="json-inner-schema">
+                    
+                </div>
+            </dd>
+            <dt>
+                <span class="json-property-name">message:</span>
+                <span class="json-property-type">
+        string
+</span>
+
+            </dt>
+            <dd>
+                
+                <div class="json-inner-schema">
+                    
+                </div>
+            </dd>
+            <dt>
+                <span class="json-property-name">fields:</span>
+                <span class="json-property-type">
+        string
+</span>
+
+            </dt>
+            <dd>
+                
+                <div class="json-inner-schema">
+                    
+                </div>
+            </dd>
+    </dl>
+</section>
+
+    </div>
+</div></div>
+</body>
+</html>
