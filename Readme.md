@@ -5,6 +5,14 @@ Namely the classes I used... but I'm not sure what else is broken.
 
 My solution to the programming assessment specified in [./docs/Assessment.md](https://github.com/selbyk/tenable-asseessment/blob/master/docs/Assessment.md)
 
+Hosted API Spec
+
+http://tenable.selby.io/assets/docs/spec/
+
+Hosted Code Documentation
+
+http://tenable.selby.io/assets/docs/jsdocs/
+
 _There is a live version I just set up on my [selby.io](http://www.selby.io:4443/) server **http** on port **4443**, **https** on port
 **4444**, and I installed [Marvel Sense and opened up port
 9200](http://selby.io:9200/_plugin/marvel/sense/) so you can play with it. It's
