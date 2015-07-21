@@ -1,5 +1,8 @@
 # Tenable Programming Assessment
 
+NOTICE: Ouch, just noticed some of the es6 features I'm using are only avaliable in io.js!
+I'll try to fix the issue by number 3.
+
 My solution to the programming assessment specified in [./docs/Assessment.md](https://github.com/selbyk/tenable-asseessment/blob/master/docs/Assessment.md)
 
 Test frontend and pretty documentation can be found at [tenable.selby.io](http://tenable.selby.io/)
