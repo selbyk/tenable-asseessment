@@ -3,6 +3,11 @@
 NOTICE: Ouch, just noticed some of the es6 features I'm using are only avaliable in io.js!
 I'll try to fix the issue by number 3.
 
+*There is a live version I just set up on my [selby.io](http://www.selby.io:4443/) server **http** on port **4443**, **https** on port
+**4444**, and I installed [Marvel Sense and opened up port
+9200](http://selby.io:9200/_plugin/marvel/sense/) so you can play with it. It's
+not a BIG deal if it goes down, but I do use it on my site, so be nice. =)*
+
 My solution to the programming assessment specified in [./docs/Assessment.md](https://github.com/selbyk/tenable-asseessment/blob/master/docs/Assessment.md)
 
 References Used:
