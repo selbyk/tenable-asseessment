@@ -4,27 +4,20 @@ let maxim = require(global.BASEPATH + 'modules/maxim');
  * @module routed
  */
 
-//TODO: If I have time, make a route class.  It's a little awkward as is.
-/** A class the handles mapping and finding routes to handle exchanges between client and server
- * @class Route
- * @ignore
- */
+ /** Interface for a Route.
+  * @interface Route
+  * @override
+  * @property {String} method - Type of http request ('GET', 'PUT', 'DELETE', 'POST')
+  * @property {String} regex - Regex to match url path, similar to express
+  */
 
-/**
- * A RequestHandler that reqirects to appropriate route or responds with error
- * @function routeRequest
- * @type RequestHandler
- */
-
-/**
- * A class holding a request method type, regex path into, and a function to handle requests
- * @ignore
- * @function Route
- * @param {string} method - Type of http request ('GET', 'PUT', 'DELETE', 'POST')
- * @param {string} regex - Regex to match url path, similar to express
- * @param {RequestHandler} handler - RequestHandler function for the route
- */
-
+ /** Function used to prepare the data to send to client, aka end of a route
+  * @function
+  * @name module:routed~Route#RequestHandler
+  * @abstract
+  * @param {RequestInfo} requestInfo - important request information recieved by server.
+  * @return {Promise} resolves with response data or error message
+  */
 
 {
   // Require modules needed for class
@@ -68,7 +61,6 @@ let maxim = require(global.BASEPATH + 'modules/maxim');
      * @function mapRoute
      * @param {Route} route - A route
      * @instance
-
      */
     mapRoute(route) {
       let method = route.method;

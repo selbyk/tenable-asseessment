@@ -1,23 +1,6 @@
 "use strict";
-/**
- * Define global types for documentation
- */
-
-/** Function used to handle a request
- * @name RequestHandler
- * @callback
- * @param {http.IncomingMessage} req - Object containing request information recieve by server.
- * @param {http.ServerResponse} res - Object containing the information we will response to the request with
- */
-
-/**
- * Object that defines a route
- * @typedef {Object} Route
- * @property {string} method - Type of http request ('GET', 'PUT', 'DELETE', 'POST')
- * @property {string} regex - Regex to match url path, similar to express
- * @property {RequestHandler} - RequestHandler function for the route
- */
-
+/** path to ./index.js
+ * @global */
 global.BASEPATH = __dirname + '/';
 
 // Require needed core Node.js modules
@@ -25,8 +8,7 @@ var http = require('http');
 var https = require('https');
 var fs = require('fs');
 
-// Require Router module, routes, and initalize routes in the Router
-//var Router = require('./modules/router');
+// Require Maxim logger, Router module, routes, and initalize routes in the Router
 let maxim = require('./modules/maxim');
 var routed = require('./modules/routed');
 var router = new routed.Router();
@@ -66,8 +48,9 @@ function handleSeverError(err) {
 
 /**
  * Handles all client requests.
- * @name handleClientRequest
- * @type {RequestHandler}
+ * @function handleClientRequest
+ * @param {http.IncomingMessage} req - Object containing request information recieve by server.
+ * @param {http.ServerResponse} res - Object containing the information we will response to the request with
  */
 function handleClientRequest(req, res) {
   // Just let me know what's going on.
