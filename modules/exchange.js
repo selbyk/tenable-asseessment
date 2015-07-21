@@ -1,7 +1,8 @@
 "use strict";
+let urlParser = require('url').parse;
 
-var Exchange = (function() {
-  var _private = new WeakMap();
+/*var Exchange = (function() {
+  var _properties = new WeakMap();
 
   function Exchange(request, response) {
     this.statusCode = 500;
@@ -27,7 +28,7 @@ var Exchange = (function() {
         }
       }
     };
-    _private.set(this, privateProperties);
+    _properties.set(this, privateProperties);
     this.processRequest(request);
   }
 
@@ -39,12 +40,12 @@ var Exchange = (function() {
         requestData += data;
       });
       request.on('end', function() {
-        _private.get(_this).req.body = JSON.parse(requestData);
-        _private.get(_this).processing = false;
+        _properties.get(_this).req.body = JSON.parse(requestData);
+        _properties.get(_this).processing = false;
         _this.handleResponse();
       });
     } else {
-      _private.get(_this).processing = false;
+      _properties.get(_this).processing = false;
       _this.handleResponse();
     }
   };
@@ -52,8 +53,8 @@ var Exchange = (function() {
   Exchange.prototype.handleResponse = function(handler) {
     var _this = this;
     if (!handler) {
-      if (!_private.get(this).processing && _private.get(this).waitingRoute !== null) {
-        _private.get(this).waitingRoute(_private.get(this).req.params, _private.get(this).req.query, _private.get(this).req.body).then(function(response) {
+      if (!_properties.get(this).processing && _properties.get(this).waitingRoute !== null) {
+        _properties.get(this).waitingRoute(_properties.get(this).requestInfo.params, _properties.get(this).requestInfo.query, _properties.get(this).requestInfo.body).then(function(response) {
           _this.setStatus(response.statusCode);
           _this.addHeaders(response.headers);
           _this.setBody(response.body);
@@ -65,10 +66,10 @@ var Exchange = (function() {
         });
       }
     } else {
-      if (_private.get(this).processing) {
-        _private.get(this).waitingRoute = handler;
+      if (_properties.get(this).processing) {
+        _properties.get(this).waitingRoute = handler;
       } else {
-        handler(_private.get(this).req.params, _private.get(this).req.query, _private.get(this).req.body).then(function(response) {
+        handler(_properties.get(this).requestInfo.params, _properties.get(this).requestInfo.query, _properties.get(this).requestInfo.body).then(function(response) {
           _this.setStatus(response.statusCode);
           _this.addHeaders(response.headers);
           _this.setBody(response.body);
@@ -83,16 +84,16 @@ var Exchange = (function() {
   };
 
   Exchange.prototype.req = function() {
-    return _private.get(this).req;
+    return _properties.get(this).requestInfo;
   };
 
   Exchange.prototype.addHeader = function(key, value) {
-    _private.get(this).headers[key] = value;
+    _properties.get(this).headers[key] = value;
   };
 
   Exchange.prototype.addHeaders = function(headers) {
     for (var key of Object.keys(headers)) {
-      this.addHeader(key, _private.get(this).headers[key]);
+      this.addHeader(key, _properties.get(this).headers[key]);
     }
   };
 
@@ -101,19 +102,19 @@ var Exchange = (function() {
   };
 
   Exchange.prototype.setBody = function(data) {
-    _private.get(this).body = data;
+    _properties.get(this).body = data;
   };
 
   Exchange.prototype.send = function() {
-    let payload = JSON.stringify(_private.get(this).body);
+    let payload = JSON.stringify(_properties.get(this).body);
     this.addHeader('Content-Length', payload.length);
     this.addHeader('Content-Type', 'application/json');
-    _private.get(this).res.writeHead(this.statusCode, _private.get(this).headers);
-    _private.get(this).res.end(payload);
+    _properties.get(this).response.writeHead(this.statusCode, _properties.get(this).headers);
+    _properties.get(this).response.end(payload);
   };
 
   return Exchange;
-}());
+}());*/
 
 
 /*{

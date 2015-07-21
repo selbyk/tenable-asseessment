@@ -1,3 +1,4 @@
+"use strict";
 /**
  * Define global types for documentation
  */
@@ -17,14 +18,18 @@
  * @property {RequestHandler} - RequestHandler function for the route
  */
 
+global.BASEPATH = __dirname;
+
 // Require needed core Node.js modules
 var http = require('http');
 var https = require('https');
 var fs = require('fs');
-var Router = require('./modules/router');
-var Exchange = require('./modules/exchange.js');
 
-var router = Router.getInstance();
+// Require Router module, routes, and initalize routes in the Router
+//var Router = require('./modules/router');
+var routed = require('./modules/router');
+var router = new routed.Router();
+router.initRouteDirectory('./routes');
 
 // Configure https keys
 var httpsOptions = {
@@ -37,12 +42,6 @@ var httpsOptions = {
 // Create our servers
 var httpServer = http.createServer();
 var httpsServer = https.createServer(httpsOptions);
-
-
-// Require Router module, routes, and initalize routes in the Router
-//var Router = require('./modules/router');
-var routes = require('./routes');
-router.mapRoutes(routes);
 
 /**
  * Handles all errors thrown by the servers.
@@ -69,33 +68,10 @@ function handleSeverError(err) {
 function handleClientRequest(req, res) {
   // Just let me know what's going on.
   console.log(req.method + " " + req.url);
-  var exchange = new Exchange(req, res);
+  let exchange = new routed.Exchange(req, res);
   exchange.addHeader('Access-Control-Allow-Origin:', '*');
-
-  var route = router.findRoute(exchange.req().method, exchange.req().path);
-
+  let route = router.findRoute(exchange.requestInfo.method, exchange.requestInfo.path);
   exchange.handleResponse(route);
-
-  delete exchange;
-
-  /*exchange.setBody({
-    'dude': {
-      ths: 'awesome'
-    }
-  });*/
-
-  //exchange.setStatus(200);
-
-  //exchange.send();
-
-  // Pass request to router for handling
-  //Router.routeRequest(req,res);
-  /*var body = 'Hello, world.';
-  res.writeHead(200, {
-    'Content-Length': body.length,
-    'Content-Type': 'text/plain'
-  });
-  res.end(body);*/
 }
 
 httpsServer.on('error', handleSeverError);

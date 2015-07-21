@@ -8,7 +8,7 @@ var fs = require('fs'),
 
 // Finds all routes and returns them as an array.
 // Not the most optimized code, but it only runs once.
-module.exports = function() {
+module.exports = [
   /**
    * Hello world route at /
    * @name GET /
@@ -16,35 +16,17 @@ module.exports = function() {
    * @instance
    * @memberof routes
    */
-  var routes = [{
-    method: 'GET',
-    regex: '/',
-    route: function(params, query, body) {
+  {
+  method: 'GET',
+  regex: '/',
+  route: (params, query, body) => {
+    console.log('IN ROUTE');
+    return new Promise((resolve, reject) => {
       var payload = {
         message: 'Hello, world!'
       };
-      return {statusCode: 200, headers: {}, body: payload};
-    }
-  }];
-
-  var dirs = fs.readdirSync('./routes').filter(function(file) {
-    return fs.statSync(path.join('./routes', file)).isDirectory();
-  });
-
-  var routeFiles = [];
-  dirs.forEach(function(dir) {
-    var files = fs.readdirSync('./routes/' + dir).filter(function(file) {
-      return path.extname(file) === '.js';
+      console.log('RESOLVING ROUTE Promise');
+      resolve({statusCode: 200, headers: {}, body: payload});
     });
-    files.forEach(function(file) {
-      routeFiles.push('./' + dir + '/' + file);
-    });
-  });
-
-  routeFiles.forEach(function(file) {
-    routes.push(require(file));
-  });
-  console.log(routes);
-
-  return routes;
-}();
+  }
+}];
