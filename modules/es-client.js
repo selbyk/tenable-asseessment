@@ -198,5 +198,43 @@ module.exports = {
         // write data to request body
         req.end();
       });
-  }
+  },
+  /**
+   * Deletes a document in ElasticSearch
+   * @function deleteDoc
+   * @param {String} _index - ElasticSearch index to use
+   * @param {String} _type - Type of object (user, config, profile, etc)
+   * @param {String} _id - Object to index. If _id key exists, it is used as key.
+   * @returns {Promise} response data or error
+   */
+   deleteDoc: function(_index, _type, _id) {
+    return new Promise(
+      // The resolver function is called with the ability to resolve or
+      // reject the promise
+      function(resolve, reject) {
+        var options = {
+          hostname: 'localhost',
+          port: 9200,
+          path: '/' + _index + '/' + _type + '/' + _id,
+          method: 'DELETE'
+        };
+        var req = request(options, function(res) {
+          res.setEncoding('utf8');
+          var fuck = '';
+          res.on('data', function(chunk) {
+            fuck += chunk;
+          });
+          res.on('end', function() {
+            resolve(JSON.parse(fuck));
+          });
+        });
+        req.on('error', function(e) {
+          console.log('problem with request: ' + e.message);
+          console.log(e);
+          reject(e);
+        });
+        // write data to request body
+        req.end();
+      });
+  },
 };
