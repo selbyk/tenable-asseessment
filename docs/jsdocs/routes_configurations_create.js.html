@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: routes/auth/me.js</title>
+    <title>JSDoc: Source: routes/configurations/create.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: routes/auth/me.js</h1>
+    <h1 class="page-title">Source: routes/configurations/create.js</h1>
 
     
 
@@ -31,15 +31,15 @@ let esClient = require(global.BASEPATH + 'modules/es-client');
 let maxim = require(global.BASEPATH + 'modules/maxim');
 
 /**
- * Returns user of access token used to authenticate request
- * @name GET /auth/me
+ * Creates a configuration
+ * @name POST /configurations
  * @type Route
  * @instance
  * @memberof routes
  */
 module.exports = {
-  method: 'GET',
-  regex: '/auth/me',
+  method: 'POST',
+  regex: '/configurations',
   route: function(requestInfo, query, body) {
     return new Promise(
       // The resolver function is called with the ability to resolve or
@@ -76,26 +76,43 @@ module.exports = {
           }).then(function(data) {
             console.log(data);
             if (data.hits.total === 1) {
-              resolve({
-                statusCode: 200,
-                headers: {},
-                body: {
-                  user: {
-                    username: data.hits.hits[0]._id
-                  }
+              esClient.indexDoc('tenable', 'configuration', body.configuration).then(function(data) {
+                console.log(data);
+                if (data.created === true) {
+                  body.configuration._id = data._id;
+                  resolve({
+                    statusCode: 200,
+                    headers: {},
+                    body: {
+                      configuration: body.configuration
+                    }
+                  });
+                } else {
+                  resolve({
+                    statusCode: 406,
+                    headers: {},
+                    body: {
+                      message: {
+                        type: 'error',
+                        code: 406,
+                        message: 'Username has been taken.'
+                      }
+                    }
+                  });
                 }
-              });
-            } else {
-              resolve({
-                statusCode: 401,
-                headers: {},
-                body: {
-                  message: {
-                    type: 'error',
-                    code: 401,
-                    message: 'Unauthorized, invalid token given. Please login again.'
-                  }
-                }
+              }).catch(e => {
+                  maxim.error(e);
+                  reject({
+                    statusCode: 500,
+                    headers: {},
+                    body: {
+                      message: {
+                        type: 'error',
+                        code: 42,
+                        message: 'There was a database communication error.  Let us know.'
+                      }
+                    }
+                  });
               });
             }
           }).catch(e => reject({
@@ -110,8 +127,8 @@ module.exports = {
             }
           }));
         };
-    });
-}
+      });
+  }
 };
 </code></pre>
         </article>

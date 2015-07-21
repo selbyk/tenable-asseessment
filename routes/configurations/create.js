@@ -3,8 +3,8 @@ let esClient = require(global.BASEPATH + 'modules/es-client');
 let maxim = require(global.BASEPATH + 'modules/maxim');
 
 /**
- * Returns user of access token used to authenticate request
- * @name GET /auth/me
+ * Creates a configuration
+ * @name POST /configurations
  * @type Route
  * @instance
  * @memberof routes
