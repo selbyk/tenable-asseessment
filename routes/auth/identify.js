@@ -17,14 +17,14 @@ module.exports = {
       // The resolver function is called with the ability to resolve or
       // reject the promise
       function(resolve, reject) {
-        function identifyUser(){
+        function identifyUser() {
           esClient.findDoc({
             _index: 'tenable',
             _type: 'user',
             _id: body.credentials.username
           }).then(function(data) {
             console.log(data);
-            if(data.found === true && body.credentials.password === data._source.password){
+            if (data.found === true && body.credentials.password === data._source.password) {
               resolve({
                 statusCode: 200,
                 headers: {},
@@ -103,11 +103,13 @@ module.exports = {
             esClient.search({
               _index: 'tenable',
               _type: 'user',
-              query: {
-                filtered: {
-                  filter: {
-                    term: {
-                      token: token
+              body: {
+                query: {
+                  filtered: {
+                    filter: {
+                      term: {
+                        token: token
+                      }
                     }
                   }
                 }
@@ -131,9 +133,8 @@ module.exports = {
               }
             }));
           });
-          };
-
-          findUniqueToken();
-        });
-    }
-  };
+        };
+        findUniqueToken();
+      });
+  }
+};

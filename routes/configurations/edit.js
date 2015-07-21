@@ -37,11 +37,13 @@ module.exports = {
           esClient.search({
             _index: 'tenable',
             _type: 'user',
-            query: {
-              filtered: {
-                filter: {
-                  term: {
-                    token: token
+            body: {
+              query: {
+                filtered: {
+                  filter: {
+                    term: {
+                      token: token
+                    }
                   }
                 }
               }
@@ -57,7 +59,7 @@ module.exports = {
                 doc
               ).then(function(data) {
                 console.log(data);
-                if(data._id === _id){
+                if (data._id === _id) {
                   resolve({
                     statusCode: 200,
                     headers: {},

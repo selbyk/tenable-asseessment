@@ -17,8 +17,36 @@ module.exports = {
       // The resolver function is called with the ability to resolve or
       // reject the promise
       function(resolve, reject) {
-        console.log('JEU!');
-        console.log(body);
+        let configsQuery = {};
+        let size = 10;
+        let page = 1;
+        if (query.page && query.page > 0) {
+          page = query.page;
+        }
+        configsQuery.size = size;
+        configsQuery.from = size * (page - 1);
+        if (query.sort) {
+          let sortFields = query.sort.split(',');
+          let possibleFields = ['name', 'hostname', 'port', 'username'];
+          configsQuery.sort = [];
+          for (var field of sortFields) {
+            let sorter = {};
+            let key = null;
+            let order = 'asc';
+            if (field[0] === '-') {
+              key = field.substring(1);
+              order = 'desc';
+            } else {
+              key = field;
+            }
+            sorter[key] = {
+              order: order
+            };
+            configsQuery.sort.push(sorter);
+          }
+        }
+        console.log('LISTLISTLIST!');
+        console.log(query);
         if (!requestInfo.headers.authorization) {
           resolve({
             statusCode: 401,
@@ -36,11 +64,13 @@ module.exports = {
           esClient.search({
             _index: 'tenable',
             _type: 'user',
-            query: {
-              filtered: {
-                filter: {
-                  term: {
-                    token: token
+            body: {
+              query: {
+                filtered: {
+                  filter: {
+                    term: {
+                      token: token
+                    }
                   }
                 }
               }
@@ -48,30 +78,31 @@ module.exports = {
           }).then(function(data) {
             console.log(data);
             if (data.hits.total === 1) {
+              configsQuery.query = {
+                filtered: {
+                  query: {
+                    match_all: {}
+                  }
+                }
+              };
               esClient.search({
                 _index: 'tenable',
                 _type: 'configuration',
-                query: {
-                  filtered: {
-                    query: {
-                      match_all: {}
-                    }
-                  }
-                }
+                body: configsQuery
               }).then(function(data) {
                 console.log(data);
-                var configurations = data.hits.hits.map(function(configHit){
+                var configurations = data.hits.hits.map(function(configHit) {
                   let config = configHit._source;
                   config._id = configHit._id;
                   return config;
                 });
-                  resolve({
-                    statusCode: 200,
-                    headers: {},
-                    body: {
-                      configurations: configurations
-                    }
-                  });
+                resolve({
+                  statusCode: 200,
+                  headers: {},
+                  body: {
+                    configurations: configurations
+                  }
+                });
               }).catch(e => reject({
                 statusCode: 500,
                 headers: {},
@@ -108,6 +139,6 @@ module.exports = {
             }
           }));
         };
-    });
-}
+      });
+  }
 };

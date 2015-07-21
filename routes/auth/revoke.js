@@ -36,11 +36,13 @@ module.exports = {
           esClient.search({
             _index: 'tenable',
             _type: 'user',
-            query: {
-              filtered: {
-                filter: {
-                  term: {
-                    token: token
+            body: {
+              query: {
+                filtered: {
+                  filter: {
+                    term: {
+                      token: token
+                    }
                   }
                 }
               }

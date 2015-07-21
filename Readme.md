@@ -280,6 +280,93 @@ Response
     }
 }
 ```
+Request
+```http
+GET /configurations?page=1&sort=-name HTTP/1.1
+Host: localhost:4443
+Content-Type: application/json
+Authorization: Bearer c2c96b3042bafe9bbe466080bd6d66fbba1a0903f1f6ea61317b27b3887b13b195ce9e5e07f68030ee0cce7d61ceabcd
+Cache-Control: no-cache
+```
+Response
+```json
+{
+    "configurations": [
+        {
+            "name": "name123",
+            "hostname": "some.ssiodjs.com",
+            "port": 2324,
+            "username": "selby.kendrick",
+            "_id": "AU6yLgjLKI-gU2xUq7PX"
+        },
+        {
+            "name": "name1",
+            "hostname": "some.ssiodjs.com",
+            "port": 2324,
+            "username": "selby.kendrick",
+            "_id": "AU6yBBSiKI-gU2xUq7PT"
+        },
+        {
+            "name": "modified123",
+            "hostname": "my.domain.org",
+            "port": 8438,
+            "username": "selby.kendrick",
+            "_id": "AU6yMCedKI-gU2xUq7PY"
+        }
+    ]
+}
+```
+Request
+```http
+GET /configurations?page=1&sort=name HTTP/1.1
+Host: localhost:4443
+Content-Type: application/json
+Authorization: Bearer c2c96b3042bafe9bbe466080bd6d66fbba1a0903f1f6ea61317b27b3887b13b195ce9e5e07f68030ee0cce7d61ceabcd
+Cache-Control: no-cache
+
+```
+Response
+```json
+{
+    "configurations": [
+        {
+            "name": "modified123",
+            "hostname": "my.domain.org",
+            "port": 8438,
+            "username": "selby.kendrick",
+            "_id": "AU6yMCedKI-gU2xUq7PY"
+        },
+        {
+            "name": "name1",
+            "hostname": "some.ssiodjs.com",
+            "port": 2324,
+            "username": "selby.kendrick",
+            "_id": "AU6yBBSiKI-gU2xUq7PT"
+        },
+        {
+            "name": "name123",
+            "hostname": "some.ssiodjs.com",
+            "port": 2324,
+            "username": "selby.kendrick",
+            "_id": "AU6yLgjLKI-gU2xUq7PX"
+        }
+    ]
+}
+```
+Request
+```http
+GET /configurations?page=2&sort=name HTTP/1.1
+Host: localhost:4443
+Content-Type: application/json
+Authorization: Bearer c2c96b3042bafe9bbe466080bd6d66fbba1a0903f1f6ea61317b27b3887b13b195ce9e5e07f68030ee0cce7d61ceabcd
+Cache-Control: no-cache
+```
+Response
+```json
+{
+    "configurations": []
+}
+```
 
 ##### Timeline
 - Day 1

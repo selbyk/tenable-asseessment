@@ -36,11 +36,13 @@ module.exports = {
           esClient.search({
             _index: 'tenable',
             _type: 'user',
-            query: {
-              filtered: {
-                filter: {
-                  term: {
-                    token: token
+            body: {
+              query: {
+                filtered: {
+                  filter: {
+                    term: {
+                      token: token
+                    }
                   }
                 }
               }
@@ -73,18 +75,18 @@ module.exports = {
                   });
                 }
               }).catch(e => {
-                  maxim.error(e);
-                  reject({
-                    statusCode: 500,
-                    headers: {},
-                    body: {
-                      message: {
-                        type: 'error',
-                        code: 42,
-                        message: 'There was a database communication error.  Let us know.'
-                      }
+                maxim.error(e);
+                reject({
+                  statusCode: 500,
+                  headers: {},
+                  body: {
+                    message: {
+                      type: 'error',
+                      code: 42,
+                      message: 'There was a database communication error.  Let us know.'
                     }
-                  });
+                  }
+                });
               });
             }
           }).catch(e => reject({

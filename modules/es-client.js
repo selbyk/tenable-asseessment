@@ -163,9 +163,7 @@ module.exports = {
       // The resolver function is called with the ability to resolve or
       // reject the promise
       function(resolve, reject) {
-        var postData = JSON.stringify({
-          query: opts.query
-        });
+        var postData = JSON.stringify(opts.body);
         var options = {
           hostname: 'localhost',
           port: 9200,
