@@ -27,8 +27,8 @@ var fs = require('fs');
 
 // Require Router module, routes, and initalize routes in the Router
 //var Router = require('./modules/router');
-let maxim = require('./modules/maxim.js');
-var routed = require('./modules/router');
+let maxim = require('./modules/maxim');
+var routed = require('./modules/routed');
 var router = new routed.Router();
 
 maxim.logLevel = 'all';

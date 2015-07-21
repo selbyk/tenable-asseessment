@@ -1,0 +1,4 @@
+[[0;32m  OK  [0m].... User Login
+[[0;32m  OK  [0m].... Are we authenticated?
+[[0;32m  OK  [0m].... User logout
+[[0;31m FAIL [0m].... Are we authenticated?

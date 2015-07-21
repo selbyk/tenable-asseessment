@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: modules/router.js</title>
+    <title>JSDoc: Source: modules/routed.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: modules/router.js</h1>
+    <h1 class="page-title">Source: modules/routed.js</h1>
 
     
 
@@ -33,10 +33,10 @@ let maxim = require(global.BASEPATH + 'modules/maxim');
  */
 
 //TODO: If I have time, make a route class.  It's a little awkward as is.
- /** A class the handles mapping and finding routes to handle exchanges between client and server
-  * @class Route
-  * @ignore
-  */
+/** A class the handles mapping and finding routes to handle exchanges between client and server
+ * @class Route
+ * @ignore
+ */
 
 /**
  * A RequestHandler that reqirects to appropriate route or responds with error
@@ -46,6 +46,7 @@ let maxim = require(global.BASEPATH + 'modules/maxim');
 
 /**
  * A class holding a request method type, regex path into, and a function to handle requests
+ * @ignore
  * @function Route
  * @param {string} method - Type of http request ('GET', 'PUT', 'DELETE', 'POST')
  * @param {string} regex - Regex to match url path, similar to express
@@ -60,23 +61,24 @@ let maxim = require(global.BASEPATH + 'modules/maxim');
 
   // Private properties and methods
   let _properties = new WeakMap();
+
   /** A class the handles mapping and finding routes to handle exchanges between client and server
    * @class Router
    */
   var Router = class Router {
     /**
-     * Creates a new Router instance
-     * @constructs Router
-     * @memberof Router
+     * A class the handles mapping and finding routes to handle exchanges between client and server
+     * @memberof module:routed~Router
+     * @constructs module:routed~Router
      */
     constructor() {
       let privateProperties = {
         /**
          * Holds the routes so they can be looked up more quickly
-         * @type {Object} routeMap
+         * @memberof module:routed~Router
          * @instance
          * @private
-         * @memberof Router
+         * @type {Object} routeMap
          */
         routeMap: {
           'GET': {},
@@ -90,7 +92,7 @@ let maxim = require(global.BASEPATH + 'modules/maxim');
 
     /**
      * Maps a Route in the router
-     * @memberof Router
+     * @memberof module:routed~Router
      * @function mapRoute
      * @param {Route} route - A route
      * @instance
@@ -108,7 +110,7 @@ let maxim = require(global.BASEPATH + 'modules/maxim');
      * @function mapRoutes
      * @param {Route[]} routes - An array of routes
      * @instance
-     * @memberof Router
+     * @memberof module:routed~Router
      */
     mapRoutes(routes) {
       if (Array.isArray(routes)) {
@@ -125,7 +127,7 @@ let maxim = require(global.BASEPATH + 'modules/maxim');
      * @function initRouteDirectory
      * @param {String} routesPath - path to routes
      * @instance
-     * @memberof Router
+     * @memberof module:routed~Router
      */
     initRouteDirectory(routesPath) {
       let _this = this;
@@ -165,7 +167,7 @@ let maxim = require(global.BASEPATH + 'modules/maxim');
      * @param {String} path - path of request
      * @returns {Promise} Promise that resolves with {statusCode, headers, and body}
      * @instance
-     * @memberof Router
+     * @memberof module:routed~Router
      */
     findRoute(method, path) {
       let routeMap = _properties.get(this).routeMap;
@@ -187,9 +189,6 @@ let maxim = require(global.BASEPATH + 'modules/maxim');
   };
 }
 
-/** A class that representind a single HTTP request/reponse to simplify the API for client/server communication
- * @class Exchange
- */
 {
   // Require modules needed for class
   let urlParser = require('url').parse;
@@ -198,10 +197,16 @@ let maxim = require(global.BASEPATH + 'modules/maxim');
   let _properties = new WeakMap();
   let _methods = new WeakMap();
 
+  /** A class that represents a single HTTP request/reponse and simplies the API for client/server communication
+   * @class module:routed~Exchange
+   */
   var Exchange = class Exchange {
     /**
      * Creates a new Exchange instance
-     * @function constructor
+     * @memberof module:routed~Exchange
+     * @constructs
+     * @param {http.IncomingMessage} request - client request
+     * @param {http.ServerResponse} response - response object to reply appropriately
      */
     constructor(request, response) {
       let _this = this;
@@ -209,20 +214,26 @@ let maxim = require(global.BASEPATH + 'modules/maxim');
       let privateProperties = {
         /**
          * Holds node http.IncomingMessage object
-         * @type {http.IncomingMessage} httpRequest
+         * @memberof module:routed~Exchange
+         * @instance
          * @private
+         * @type {http.IncomingMessage} httpRequest
          */
         httpRequest: request,
         /**
          * Holds node http.ServerResponse object
-         * @type {http.ServerResponse} httpResponse
+         * @memberof module:routed~Exchange
+         * @instance
          * @private
+         * @type {http.ServerResponse} httpResponse
          */
         httpResponse: response,
         /**
          * Holds request info retrieved from httpRequest
-         * @type {Object} requestInfo
+         * @memberof module:routed~Exchange
+         * @instance
          * @private
+         * @type {Object} requestInfo
          */
         requestInfo: {
           method: request.method,
@@ -234,32 +245,42 @@ let maxim = require(global.BASEPATH + 'modules/maxim');
         },
         /**
          * Holds body of incoming request
-         * @type {Object} requestBody
+         * @memberof module:routed~Exchange
+         * @instance
          * @private
+         * @type {Object} requestBody
          */
         requestBody: '',
         /**
          * HTTP status that will be sent to client
-         * @type {Number} responseStatus
+         * @memberof module:routed~Exchange
+         * @instance
          * @private
+         * @type {Number} responseStatus
          */
         responseStatus: 500,
         /**
          * Header that will be sent to client
-         * @type {Object} httpRequest
+         * @memberof module:routed~Exchange
+         * @instance
          * @private
+         * @type {Object} responseHeaders
          */
         responseHeaders: {},
         /**
          * Data that will be sent to client
-         * @type {Object} httpRequest
+         * @memberof module:routed~Exchange
+         * @instance
          * @private
+         * @type {Object} responseBody
          */
         responseBody: {},
       };
       let privateMethods = {
         /**
          * Processes and collects info from the HTTP request
+         * @memberof module:routed~Exchange
+         * @instance
          * @function processPayload
          * @private
          * @param {http.IncomingMessage} request - The HTTP request
@@ -295,6 +316,8 @@ let maxim = require(global.BASEPATH + 'modules/maxim');
         },
         /**
          * Sents response to client and closes the Exchange
+         * @memberof module:routed~Exchange
+         * @instance
          * @function send
          * @private
          */
@@ -332,6 +355,7 @@ let maxim = require(global.BASEPATH + 'modules/maxim');
 
     /**
      * Returns message of any HTTP status code
+     * @memberof module:routed~Exchange
      * @function statusMessage
      * @static
      * @param {Number} code - A HTTP status code
@@ -351,6 +375,8 @@ let maxim = require(global.BASEPATH + 'modules/maxim');
 
     /**
      * Set the RequestHandler that should handle setting up the response
+     * @memberof module:routed~Exchange
+     * @instance
      * @function handleResponse
      * @param {RequestHandler} handler - The RequestHandler that should handle the response
      */
@@ -390,6 +416,8 @@ let maxim = require(global.BASEPATH + 'modules/maxim');
 
     /**
      * Adds a header to send with the response
+     * @memberof module:routed~Exchange
+     * @instance
      * @function addHeader
      * @param {String} key - key of header
      * @param {String} value - value of header
@@ -400,6 +428,8 @@ let maxim = require(global.BASEPATH + 'modules/maxim');
 
     /**
      * Adds headers to send with the response
+     * @memberof module:routed~Exchange
+     * @instance
      * @function addHeaders
      * @param {Object} headers - object holding key=>value pairs of header info
      */
@@ -415,6 +445,8 @@ let maxim = require(global.BASEPATH + 'modules/maxim');
 
     /**
      * Request information
+     * @memberof module:routed~Exchange
+     * @instance
      * @readonly
      * @type {Object}
      */
@@ -424,6 +456,8 @@ let maxim = require(global.BASEPATH + 'modules/maxim');
 
     /**
      * Status of response
+     * @memberof module:routed~Exchange
+     * @instance
      * @readonly
      * @type {Number}
      */
@@ -433,6 +467,8 @@ let maxim = require(global.BASEPATH + 'modules/maxim');
 
     /**
      * Object of headers.
+     * @memberof module:routed~Exchange
+     * @instance
      * @readonly
      * @type {Object}
      */
@@ -442,6 +478,8 @@ let maxim = require(global.BASEPATH + 'modules/maxim');
 
     /**
      * Payload to send as response body
+     * @memberof module:routed~Exchange
+     * @instance
      * @readonly
      * @type {Object}
      */
@@ -466,13 +504,13 @@ module.exports = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-es-client.html">es-client</a></li><li><a href="module-routed.html">routed</a></li></ul><h3>Classes</h3><ul><li><a href="Maxim.html">Maxim</a></li><li><a href="module-routed-Exchange.html">Exchange</a></li><li><a href="module-routed-Router.html">Router</a></li></ul><h3>Namespaces</h3><ul><li><a href="routes.html">routes</a></li></ul><h3>Global</h3><ul><li><a href="global.html#handleClientRequest">handleClientRequest</a></li><li><a href="global.html#handleSeverError">handleSeverError</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-es-client.html">es-client</a></li><li><a href="module-routed.html">routed</a></li></ul><h3>Classes</h3><ul><li><a href="-_.html"></a></li><li><a href="Maxim.html">Maxim</a></li><li><a href="module-routed-Exchange.html">Exchange</a></li><li><a href="module-routed-Router.html">Router</a></li></ul><h3>Namespaces</h3><ul><li><a href="routes.html">routes</a></li></ul><h3>Global</h3><ul><li><a href="global.html#handleClientRequest">handleClientRequest</a></li><li><a href="global.html#handleSeverError">handleSeverError</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Tue Jul 21 2015 11:05:22 GMT-0500 (CDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Tue Jul 21 2015 12:06:46 GMT-0500 (CDT)
 </footer>
 
 <script> prettyPrint(); </script>

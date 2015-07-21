@@ -4,39 +4,53 @@ let maxim = require(global.BASEPATH + 'modules/maxim');
  * @module routed
  */
 
-// From Stackoverflow.  Not used.  Thought it might come in handy.
-function isEmpty(obj) {
-  // null and undefined are "empty"
-  if (obj === null) return true;
-  // Assume if it has a length property with a non-zero value
-  // that that property is correct.
-  if (obj.length > 0) return false;
-  if (obj.length === 0) return true;
-  // Otherwise, does it have any properties of its own?
-  // Note that this doesn't handle
-  // toString and valueOf enumeration bugs in IE < 9
-  for (var key in obj) {
-    if (hasOwnProperty.call(obj, key)) return false;
-  }
-  return true;
-}
-
+//TODO: If I have time, make a route class.  It's a little awkward as is.
 /** A class the handles mapping and finding routes to handle exchanges between client and server
- * @class Router
+ * @class Route
+ * @ignore
  */
+
+/**
+ * A RequestHandler that reqirects to appropriate route or responds with error
+ * @function routeRequest
+ * @type RequestHandler
+ */
+
+/**
+ * A class holding a request method type, regex path into, and a function to handle requests
+ * @ignore
+ * @function Route
+ * @param {string} method - Type of http request ('GET', 'PUT', 'DELETE', 'POST')
+ * @param {string} regex - Regex to match url path, similar to express
+ * @param {RequestHandler} handler - RequestHandler function for the route
+ */
+
+
 {
+  // Require modules needed for class
   let fs = require('fs');
   let path = require('path');
+
+  // Private properties and methods
   let _properties = new WeakMap();
-  //let _methods = new WeakMap();
+
+  /** A class the handles mapping and finding routes to handle exchanges between client and server
+   * @class Router
+   */
   var Router = class Router {
+    /**
+     * A class the handles mapping and finding routes to handle exchanges between client and server
+     * @memberof module:routed~Router
+     * @constructs module:routed~Router
+     */
     constructor() {
       let privateProperties = {
-        routes: [],
         /**
-         * Maps an array of Routes
-         * @function mapRoutes
-         * @param {Route[]} routes - An array of routes to map
+         * Holds the routes so they can be looked up more quickly
+         * @memberof module:routed~Router
+         * @instance
+         * @private
+         * @type {Object} routeMap
          */
         routeMap: {
           'GET': {},
@@ -49,21 +63,34 @@ function isEmpty(obj) {
     }
 
     /**
-     * Maps a Route
-     * @function mapRoutes
+     * Maps a Route in the router
+     * @memberof module:routed~Router
+     * @function mapRoute
      * @param {Route} route - A route
+     * @instance
+
      */
-    mapRoute(method, regex, route) {
-      _properties.get(this).routeMap[method]['^' + regex.replace(/[\\$'"]/g, "\\$&") + '$'] = route;
+    mapRoute(route) {
+      let method = route.method;
+      let regex = route.regex;
+      let handler = route.route;
+      _properties.get(this).routeMap[method]['^' + regex.replace(/[\\$'"]/g, "\\$&") + '$'] = handler;
     }
 
+    /**
+     * Maps an array of Routes in the router
+     * @function mapRoutes
+     * @param {Route[]} routes - An array of routes
+     * @instance
+     * @memberof module:routed~Router
+     */
     mapRoutes(routes) {
       if (Array.isArray(routes)) {
         for (var i = 0; i < routes.length; ++i) {
-          this.mapRoute(routes[i].method, routes[i].regex, routes[i].route);
+          this.mapRoute(routes[i]);
         }
       } else {
-        this.mapRoute(routes.method, routes.regex, routes.route);
+        this.mapRoute(routes);
       }
     }
 
@@ -71,6 +98,8 @@ function isEmpty(obj) {
      * Recursively loads all routes in given directory
      * @function initRouteDirectory
      * @param {String} routesPath - path to routes
+     * @instance
+     * @memberof module:routed~Router
      */
     initRouteDirectory(routesPath) {
       let _this = this;
@@ -105,8 +134,12 @@ function isEmpty(obj) {
 
     /**
      * Finds and returns a Route matching given method and path, or a default Route
-     * @function mapRoutes
-     * @param {Route[]} routes - An array of routes to map
+     * @function findRoute
+     * @param {String} method - Valid HTTP request method
+     * @param {String} path - path of request
+     * @returns {Promise} Promise that resolves with {statusCode, headers, and body}
+     * @instance
+     * @memberof module:routed~Router
      */
     findRoute(method, path) {
       let routeMap = _properties.get(this).routeMap;
@@ -128,9 +161,6 @@ function isEmpty(obj) {
   };
 }
 
-/** A class that represents a single HTTP request/reponse and simplies the API for client/server communication
- * @class Exchange
- */
 {
   // Require modules needed for class
   let urlParser = require('url').parse;
@@ -139,13 +169,44 @@ function isEmpty(obj) {
   let _properties = new WeakMap();
   let _methods = new WeakMap();
 
+  /** A class that represents a single HTTP request/reponse and simplies the API for client/server communication
+   * @class module:routed~Exchange
+   */
   var Exchange = class Exchange {
+    /**
+     * Creates a new Exchange instance
+     * @memberof module:routed~Exchange
+     * @constructs
+     * @param {http.IncomingMessage} request - client request
+     * @param {http.ServerResponse} response - response object to reply appropriately
+     */
     constructor(request, response) {
       let _this = this;
       let parsedUrl = urlParser(request.url, true);
       let privateProperties = {
+        /**
+         * Holds node http.IncomingMessage object
+         * @memberof module:routed~Exchange
+         * @instance
+         * @private
+         * @type {http.IncomingMessage} httpRequest
+         */
         httpRequest: request,
+        /**
+         * Holds node http.ServerResponse object
+         * @memberof module:routed~Exchange
+         * @instance
+         * @private
+         * @type {http.ServerResponse} httpResponse
+         */
         httpResponse: response,
+        /**
+         * Holds request info retrieved from httpRequest
+         * @memberof module:routed~Exchange
+         * @instance
+         * @private
+         * @type {Object} requestInfo
+         */
         requestInfo: {
           method: request.method,
           headers: request.headers,
@@ -154,19 +215,55 @@ function isEmpty(obj) {
           query: parsedUrl.query,
           body: null
         },
+        /**
+         * Holds body of incoming request
+         * @memberof module:routed~Exchange
+         * @instance
+         * @private
+         * @type {Object} requestBody
+         */
         requestBody: '',
+        /**
+         * HTTP status that will be sent to client
+         * @memberof module:routed~Exchange
+         * @instance
+         * @private
+         * @type {Number} responseStatus
+         */
         responseStatus: 500,
+        /**
+         * Header that will be sent to client
+         * @memberof module:routed~Exchange
+         * @instance
+         * @private
+         * @type {Object} responseHeaders
+         */
         responseHeaders: {},
-        responseBody: '',
+        /**
+         * Data that will be sent to client
+         * @memberof module:routed~Exchange
+         * @instance
+         * @private
+         * @type {Object} responseBody
+         */
+        responseBody: {},
       };
       let privateMethods = {
+        /**
+         * Processes and collects info from the HTTP request
+         * @memberof module:routed~Exchange
+         * @instance
+         * @function processPayload
+         * @private
+         * @param {http.IncomingMessage} request - The HTTP request
+         * @returns {Promise} Resolves with request body as JSON
+         */
         processPayload: function(request) {
           maxim.info('IN PAYLOAD Function!');
           return new Promise((resolve, reject) => {
             maxim.info('IN PAYLOAD PROMISE!');
             let requestBody = null;
             var finished = function() {
-              _properties.get(_this).processing = false;
               maxim.info('RESOLVING PAYLOAD PROMISE!');
               resolve(requestBody);
             };
@@ -188,6 +285,13 @@ function isEmpty(obj) {
             }
           });
         },
+        /**
+         * Sents response to client and closes the Exchange
+         * @memberof module:routed~Exchange
+         * @instance
+         * @function send
+         * @private
+         */
         send: function() {
           maxim.info('SENDING PAYLOAD!');
           let httpResponse = _properties.get(_this).httpResponse;
@@ -201,7 +305,7 @@ function isEmpty(obj) {
           }
 
           if (payload) {
-            if (typeof payload === 'object'){
+            if (typeof payload === 'object') {
               payload = JSON.stringify(payload);
             }
             _this.addHeader('Content-Type', 'application/json');
@@ -213,17 +317,21 @@ function isEmpty(obj) {
             httpResponse.end();
             finished();
           }
-        },
-        processingPromise: null,
-        processingFinished: null,
-        resolvePromise: null,
-        rejectPromise: null
+        }
       };
-      _properties.set(this, privateProperties);
       privateMethods.processingPromise = privateMethods.processPayload(request);
+      _properties.set(this, privateProperties);
       _methods.set(this, privateMethods);
     }
 
+    /**
+     * Returns message of any HTTP status code
+     * @memberof module:routed~Exchange
+     * @function statusMessage
+     * @static
+     * @param {Number} code - A HTTP status code
+     * @returns {String} Message associated with code
+     */
     static statusMessage(code) {
       let codeMessages = {
         200: 'OK',
@@ -236,6 +344,13 @@ function isEmpty(obj) {
       }
     }
 
+    /**
+     * Set the RequestHandler that should handle setting up the response
+     * @memberof module:routed~Exchange
+     * @instance
+     * @function handleResponse
+     * @param {RequestHandler} handler - The RequestHandler that should handle the response
+     */
     handleResponse(handler) {
       // Speed up calls to hasOwnProperty
       var hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -270,10 +385,25 @@ function isEmpty(obj) {
       });
     }
 
+    /**
+     * Adds a header to send with the response
+     * @memberof module:routed~Exchange
+     * @instance
+     * @function addHeader
+     * @param {String} key - key of header
+     * @param {String} value - value of header
+     */
     addHeader(key, value) {
       _properties.get(this).responseHeaders[key] = value;
     }
 
+    /**
+     * Adds headers to send with the response
+     * @memberof module:routed~Exchange
+     * @instance
+     * @function addHeaders
+     * @param {Object} headers - object holding key=>value pairs of header info
+     */
     addHeaders(headers) {
       for (var key of Object.keys(headers)) {
         this.addHeader(key, headers[key]);
@@ -284,44 +414,54 @@ function isEmpty(obj) {
       maxim.info('not impliminetnedfjklndsfkdj', code, message);
     }
 
+    /**
+     * Request information
+     * @memberof module:routed~Exchange
+     * @instance
+     * @readonly
+     * @type {Object}
+     */
     get requestInfo() {
       return _properties.get(this).requestInfo;
     }
 
+    /**
+     * Status of response
+     * @memberof module:routed~Exchange
+     * @instance
+     * @readonly
+     * @type {Number}
+     */
     get statusCode() {
       return _properties.get(this).statusCode;
     }
 
+    /**
+     * Object of headers.
+     * @memberof module:routed~Exchange
+     * @instance
+     * @readonly
+     * @type {Object}
+     */
     get headers() {
       return _properties.get(this).responseHeaders;
     }
 
+    /**
+     * Payload to send as response body
+     * @memberof module:routed~Exchange
+     * @instance
+     * @readonly
+     * @type {Object}
+     */
     get body() {
       return _properties.get(this).responseBody;
     }
   };
 }
 
-/** A class the handles mapping and finding routes to handle exchanges between client and server
- * @class Route
- */
-
-/**
- * A class holding a request method type, regex path into, and a function to handle requests
- * @function Route
- * @param {string} method - Type of http request ('GET', 'PUT', 'DELETE', 'POST')
- * @param {string} regex - Regex to match url path, similar to express
- * @param {RequestHandler} - RequestHandler function for the route
- */
 module.exports = {
   Router: Router,
   Exchange: Exchange,
   //Route: Route
 };
-
-
-/**
- * A RequestHandler that reqirects to appropriate route or responds with error
- * @function routeRequest
- * @type RequestHandler
- */
