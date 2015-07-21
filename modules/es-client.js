@@ -58,13 +58,13 @@ module.exports = {
         reject('no id given');
         return;
       }
-      var postData = JSON.stringify(doc);
+      var postData = JSON.stringify({doc:doc});
 
       var options = {
         hostname: 'localhost',
         port: 9200,
         path: '/' + _index + '/' + _type + '/' + _id + '/_update',
-        method: 'PUT',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Content-Length': postData.length

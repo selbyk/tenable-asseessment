@@ -1,12 +1,10 @@
 "use strict";
+let maxim = require(global.BASEPATH + 'modules/maxim');
 /**
  * Namespace of all route definitions
  * @namespace routes
  */
-let maxim = require(global.BASEPATH + 'modules/maxim');
 
-// Finds all routes and returns them as an array.
-// Not the most optimized code, but it only runs once.
 module.exports = [
   /**
    * Hello world route at /

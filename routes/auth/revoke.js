@@ -1,9 +1,18 @@
-var esClient = require('../../modules/es-client');
+"use strict";
+let esClient = require(global.BASEPATH + 'modules/es-client');
+let maxim = require(global.BASEPATH + 'modules/maxim');
 
+/**
+ * Revokes access token used to authenticate request
+ * @name GET /auth/revoke
+ * @type Route
+ * @instance
+ * @memberof routes
+ */
 module.exports = {
   method: 'GET',
-  regex: '/auth/identify',
-  route: function(params, query, body) {
+  regex: '/auth/revoke',
+  route: function(requestInfo, query, body) {
     return new Promise(
       // The resolver function is called with the ability to resolve or
       // reject the promise
@@ -37,11 +46,11 @@ module.exports = {
               }
             }
           }).then(function(data) {
-            console.log(data);
+            console.log(data.hits.hits);
             if (data.hits.total === 1) {
               require('crypto').randomBytes(48, function(ex, buf) {
                 esClient.updateDoc('tenable', 'user', {
-                  _id: data.hits.hits[0].username,
+                  _id: data.hits.hits[0]._id,
                   token: buf.toString('hex')
                 }).then(function(data) {
                   console.log(data);
@@ -51,7 +60,7 @@ module.exports = {
                     body: {
                       message: {
                         type: 'info',
-                        message: data.hits.total.hits[0].username + ' logged out successfully'
+                        message: data._id + ' logged out successfully'
                       }
                     }
                   });

@@ -1,5 +1,14 @@
-var esClient = require('../../modules/es-client');
+"use strict";
+let esClient = require(global.BASEPATH + 'modules/es-client');
+let maxim = require(global.BASEPATH + 'modules/maxim');
 
+/**
+ * Update account to given credentials with uniquely generated token and return it
+ * @name GET /auth/revoke
+ * @type Route
+ * @instance
+ * @memberof routes
+ */
 module.exports = {
   method: 'POST',
   regex: '/auth/identify',
@@ -8,48 +17,121 @@ module.exports = {
       // The resolver function is called with the ability to resolve or
       // reject the promise
       function(resolve, reject) {
-        console.log('JEU!');
-        console.log(body);
-        esClient.findDoc({
-          _index: 'tenable',
-          _type: 'user',
-          _id: body.credentials.username
-        }).then(function(data) {
-          console.log(data);
-          if(data.found === true && body.credentials.password === data._source.password){
-            resolve({
-              statusCode: 200,
-              headers: {},
-              body: {
-                grant: {
-                  access_token: data._source.token || 'infdgdfshdzhxfhhcfodidhaveoneyet'
+        function identifyUser(){
+          esClient.findDoc({
+            _index: 'tenable',
+            _type: 'user',
+            _id: body.credentials.username
+          }).then(function(data) {
+            console.log(data);
+            if(data.found === true && body.credentials.password === data._source.password){
+              resolve({
+                statusCode: 200,
+                headers: {},
+                body: {
+                  grant: {
+                    access_token: data._source.token || 'infdgdfshdzhxfhhcfodidhaveoneyet'
+                  }
+                }
+              });
+            } else {
+              resolve({
+                statusCode: 401,
+                headers: {},
+                body: {
+                  message: {
+                    type: 'error',
+                    code: 401,
+                    message: 'Unauthorized, invalid credentials given.'
+                  }
+                }
+              });
+            }
+          }).catch(e => reject({
+            statusCode: 500,
+            headers: {},
+            body: {
+              message: {
+                type: 'error',
+                code: 42,
+                message: 'There was a database communication error.  Let us know.'
+              }
+            }
+          }));
+        }
+
+        function updateToken(token) {
+          console.log('JEU!');
+          console.log(body);
+          esClient.updateDoc('tenable', 'user', {
+            _id: body.credentials.username,
+            token: token
+          }).then(function(data) {
+            console.log(data);
+            if (data._id === body.credentials.username) {
+              identifyUser();
+            } else {
+              resolve({
+                statusCode: 401,
+                headers: {},
+                body: {
+                  message: {
+                    type: 'error',
+                    code: 500,
+                    message: 'There was a problem generating access token.'
+                  }
+                }
+              });
+            }
+          }).catch(e => reject({
+            statusCode: 500,
+            headers: {},
+            body: {
+              message: {
+                type: 'error',
+                code: 42,
+                message: 'There was a database communication error.  Let us know.'
+              }
+            }
+          }));
+        }
+        var findUniqueToken = function() {
+
+          require('crypto').randomBytes(48, function(ex, buf) {
+            esClient.search({
+              _index: 'tenable',
+              _type: 'user',
+              query: {
+                filtered: {
+                  filter: {
+                    term: {
+                      token: buf.toString('hex')
+                    }
+                  }
                 }
               }
-            });
-          } else {
-            resolve({
-              statusCode: 401,
+            }).then(function(data) {
+              console.log(data);
+              if (data.hits.total === 0) {
+                updateToken();
+              } else {
+                findUniqueToken();
+              }
+            }).catch(e => reject({
+              statusCode: 500,
               headers: {},
               body: {
                 message: {
                   type: 'error',
-                  code: 401,
-                  message: 'Unauthorized, invalid credentials given.'
+                  code: 42,
+                  message: 'There was a database communication error.  Let us know.' + e.message
                 }
               }
-            });
-          }
-        }).catch(e => reject({
-          statusCode: 500,
-          headers: {},
-          body: {
-            message: {
-              type: 'error',
-              code: 42,
-              message: 'There was a database communication error.  Let us know.'
-            }
-          }
-        }));
-      });
-  }
-};
+            }));
+          });
+          };
+
+          findUniqueToken();
+        });
+    }
+  };

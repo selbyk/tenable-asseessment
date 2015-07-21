@@ -1,5 +1,14 @@
-var esClient = require('../../modules/es-client');
+"use strict";
+let esClient = require(global.BASEPATH + 'modules/es-client');
+let maxim = require(global.BASEPATH + 'modules/maxim');
 
+/**
+ * Returns user of access token used to authenticate request
+ * @name GET /auth/me
+ * @type Route
+ * @instance
+ * @memberof routes
+ */
 module.exports = {
   method: 'GET',
   regex: '/auth/me',
