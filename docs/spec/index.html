@@ -85,10 +85,10 @@
             </tr>
             <tr>
                     <td class="swagger--summary-path" rowspan="2">
-                        <a href="#path--configurations--name-">/configurations/{name}</a>
+                        <a href="#path--configurations--id-">/configurations/{id}</a>
                     </td>
                 <td>
-                    <a href="#method--configurations--name--delete">DELETE</a>
+                    <a href="#method--configurations--id--delete">DELETE</a>
                 </td>
                 <td>
                     Delete Configuration
@@ -96,7 +96,7 @@
             </tr>
             <tr>
                 <td>
-                    <a href="#method--configurations--name--put">PUT</a>
+                    <a href="#method--configurations--id--put">PUT</a>
                 </td>
                 <td>
                     Update Configuration
@@ -662,22 +662,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>offset
+                    <td>page
 </td>
-                    <td>Offset the list of returned results by this amount. Default is 0.</td>
-                    <td>query</td>
-                    <td>
-                        <span class="json-property-type">
-        integer
-</span>
-    <span class="json-property-format">(int32)</span>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td>limit
-</td>
-                    <td>Number of items to retrieve. Default is 10, maximum is 100.</td>
+                    <td>Page of results to return. Default is 1. Page size is 10.</td>
                     <td>query</td>
                     <td>
                         <span class="json-property-type">
@@ -959,11 +946,11 @@
     </section>
     </div>
 </div>    
-<span id="path-/configurations/{name}"></span>
-    <div id="method--configurations--name--delete" class="swagger--panel-method-delete panel">
+<span id="path-/configurations/{id}"></span>
+    <div id="method--configurations--id--delete" class="swagger--panel-method-delete panel">
     <div class="panel-heading">
         <div class="method-summary">Delete Configuration</div>
-        <h3 class="panel-title"><span class="method-name">DELETE</span> <strong>/configurations/{name}</strong></h3>
+        <h3 class="panel-title"><span class="method-name">DELETE</span> <strong>/configurations/{id}</strong></h3>
     </div>
     <div class="panel-body">
         <section class="sw-method-description">
@@ -996,7 +983,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>name
+                    <td>id
                             <span class="json-property-required"></span>
                         </td>
                     <td>name of configuration to delete</td>
@@ -1106,10 +1093,10 @@
         </table>
     </section>
     </div>
-</div>    <div id="method--configurations--name--put" class="swagger--panel-method-put panel">
+</div>    <div id="method--configurations--id--put" class="swagger--panel-method-put panel">
     <div class="panel-heading">
         <div class="method-summary">Update Configuration</div>
-        <h3 class="panel-title"><span class="method-name">PUT</span> <strong>/configurations/{name}</strong></h3>
+        <h3 class="panel-title"><span class="method-name">PUT</span> <strong>/configurations/{id}</strong></h3>
     </div>
     <div class="panel-body">
         <section class="sw-method-description">
@@ -1142,10 +1129,10 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>name
+                    <td>id
                             <span class="json-property-required"></span>
                         </td>
-                    <td>name of configuration to update</td>
+                    <td>id of configuration to update</td>
                     <td>path</td>
                     <td>
                         <span class="json-property-type">
@@ -1446,7 +1433,7 @@
             <section class="json-schema-properties">
     <dl>
             <dt>
-                <span class="json-property-name">bearer_token:</span>
+                <span class="json-property-name">access_token:</span>
                 <span class="json-property-type">
         string
 </span>

@@ -211,18 +211,11 @@
                         "type": "string"
                     },
                     {
-                        "name": "offset",
+                        "name": "page",
                         "in": "query",
                         "type": "integer",
                         "format": "int32",
-                        "description": "Offset the list of returned results by this amount. Default is 0."
-                    },
-                    {
-                        "name": "limit",
-                        "in": "query",
-                        "type": "integer",
-                        "format": "int32",
-                        "description": "Number of items to retrieve. Default is 10, maximum is 100."
+                        "description": "Page of results to return. Default is 1. Page size is 10."
                     },
                     {
                         "name": "sort",
@@ -318,7 +311,7 @@
                 ]
             }
         },
-        "/configurations/{name}": {
+        "/configurations/{id}": {
             "put": {
                 "summary": "Update Configuration",
                 "description": "Updates configuration that has name {name}",
@@ -331,9 +324,9 @@
                         "type": "string"
                     },
                     {
-                        "name": "name",
+                        "name": "id",
                         "in": "path",
-                        "description": "name of configuration to update",
+                        "description": "id of configuration to update",
                         "required": true,
                         "type": "string"
                     },
@@ -390,7 +383,7 @@
                         "type": "string"
                     },
                     {
-                        "name": "name",
+                        "name": "id",
                         "in": "path",
                         "description": "name of configuration to delete",
                         "required": true,
@@ -487,10 +480,10 @@
         },
         "grant": {
             "required": [
-                "bearer_token"
+                "access_token"
             ],
             "properties": {
-                "bearer_token": {
+                "access_token": {
                     "type": "string",
                     "description": "Token for authenticating requests"
                 },
