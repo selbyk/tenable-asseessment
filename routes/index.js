@@ -1,10 +1,9 @@
+"use strict";
 /**
  * Namespace of all route definitions
  * @namespace routes
  */
-
-var fs = require('fs'),
-  path = require('path');
+let maxim = require(global.BASEPATH + 'modules/maxim');
 
 // Finds all routes and returns them as an array.
 // Not the most optimized code, but it only runs once.
@@ -17,16 +16,21 @@ module.exports = [
    * @memberof routes
    */
   {
-  method: 'GET',
-  regex: '/',
-  route: (params, query, body) => {
-    console.log('IN ROUTE');
-    return new Promise((resolve, reject) => {
-      var payload = {
-        message: 'Hello, world!'
-      };
-      console.log('RESOLVING ROUTE Promise');
-      resolve({statusCode: 200, headers: {}, body: payload});
-    });
+    method: 'GET',
+    regex: '/',
+    route: (params, query, body) => {
+      maxim.error('IN ROUTE');
+      return new Promise((resolve, reject) => {
+        var payload = {
+          message: 'Hello, world!'
+        };
+        maxim.log('RESOLVING ROUTE Promise');
+        resolve({
+          statusCode: 200,
+          headers: {},
+          body: payload
+        });
+      });
+    }
   }
-}];
+];

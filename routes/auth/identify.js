@@ -15,18 +15,41 @@ module.exports = {
           _type: 'user',
           _id: body.credentials.username
         }).then(function(data) {
-          resolve({
-            statusCode: 200,
-            headers: {},
-            body: data
-          });
-        }).catch(function(e) {
-          reject({
-            statusCode: 500,
-            headers: {},
-            body: e
-          });
-        });
+          console.log(data);
+          if(data.found === true && body.credentials.password === data._source.password){
+            resolve({
+              statusCode: 200,
+              headers: {},
+              body: {
+                grant: {
+                  access_token: data._source.token || 'infdgdfshdzhxfhhcfodidhaveoneyet'
+                }
+              }
+            });
+          } else {
+            resolve({
+              statusCode: 401,
+              headers: {},
+              body: {
+                message: {
+                  type: 'error',
+                  code: 401,
+                  message: 'Unauthorized, invalid credentials given.'
+                }
+              }
+            });
+          }
+        }).catch(e => reject({
+          statusCode: 500,
+          headers: {},
+          body: {
+            message: {
+              type: 'error',
+              code: 42,
+              message: 'There was a database communication error.  Let us know.'
+            }
+          }
+        }));
       });
   }
 };

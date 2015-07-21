@@ -1,3 +1,4 @@
+"use strict";
 var esClient = require('../../modules/es-client');
 
 module.exports = {
@@ -10,21 +11,50 @@ module.exports = {
       function(resolve, reject) {
         console.log('JEU!');
         console.log(body);
-        esClient.indexDoc('tenable', 'user', {
-          _id: body.credentials.username,
-          password: body.credentials.password
-        }).then(function(data) {
-          console.log(data);
-          resolve({
-            statusCode: 200,
+        require('crypto').randomBytes(48, function(ex, buf) {
+          let token = buf.toString('hex');
+          esClient.indexDoc('tenable', 'user', {
+            _id: body.credentials.username,
+            password: body.credentials.password,
+            token: token
+          }).then(function(data) {
+            console.log(data);
+            if (data.created === true) {
+              resolve({
+                statusCode: 200,
+                headers: {},
+                body: {
+                  message: {
+                    type: 'info',
+                    message: 'Account created successfully, you may login.'
+                  }
+                }
+              });
+            } else {
+              resolve({
+                statusCode: 406,
+                headers: {},
+                body: {
+                  message: {
+                    type: 'error',
+                    code: 406,
+                    message: 'Username has been taken.'
+                  }
+                }
+              });
+            }
+          }).catch(e => reject({
+            statusCode: 500,
             headers: {},
-            body: data
-          });
-        }).catch(e => reject({
-          statusCode: 200,
-          headers: {},
-          body: e
-        }));
+            body: {
+              message: {
+                type: 'error',
+                code: 42,
+                message: 'There was a database communication error.  Let us know.'
+              }
+            }
+          }));
+        });
       });
   }
 };
