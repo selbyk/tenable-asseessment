@@ -93,6 +93,18 @@ module.exports = {
                   }
                 }
               }));
+            } else {
+              resolve({
+                statusCode: 401,
+                headers: {},
+                body: {
+                  message: {
+                    type: 'error',
+                    code: 401,
+                    message: 'invalid credentials, must be authorizatized.'
+                  }
+                }
+              });
             }
           }).catch(e => reject({
             statusCode: 500,

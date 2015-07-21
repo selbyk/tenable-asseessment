@@ -27,7 +27,7 @@ module.exports = {
               message: {
                 type: 'error',
                 code: 401,
-                message: 'Unauthorized, invalid token must be given.'
+                message: 'Unauthorized, valid token must be given.'
               }
             }
           });
@@ -51,14 +51,12 @@ module.exports = {
               esClient.indexDoc('tenable', 'configuration', body.configuration).then(function(data) {
                 console.log(data);
                 if (data.created === true) {
+                  body.configuration._id = data._id;
                   resolve({
                     statusCode: 200,
                     headers: {},
                     body: {
-                      message: {
-                        type: 'info',
-                        message: 'configuration created successfully.'
-                      }
+                      configuration: body.configuration
                     }
                   });
                 } else {

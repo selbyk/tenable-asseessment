@@ -30,7 +30,7 @@ module.exports = {
                 headers: {},
                 body: {
                   grant: {
-                    access_token: data._source.token || 'infdgdfshdzhxfhhcfodidhaveoneyet'
+                    access_token: data._source.token
                   }
                 }
               });
@@ -42,7 +42,7 @@ module.exports = {
                   message: {
                     type: 'error',
                     code: 401,
-                    message: 'Unauthorized, invalid credentials given.'
+                    message: 'Unauthorized, valid credentials given.'
                   }
                 }
               });
@@ -63,6 +63,7 @@ module.exports = {
         function updateToken(token) {
           console.log('JEU!');
           console.log(body);
+          console.log(token);
           esClient.updateDoc('tenable', 'user', {
             _id: body.credentials.username,
             token: token
@@ -98,6 +99,7 @@ module.exports = {
         var findUniqueToken = function() {
 
           require('crypto').randomBytes(48, function(ex, buf) {
+            var token = buf.toString('hex');
             esClient.search({
               _index: 'tenable',
               _type: 'user',
@@ -105,7 +107,7 @@ module.exports = {
                 filtered: {
                   filter: {
                     term: {
-                      token: buf.toString('hex')
+                      token: token
                     }
                   }
                 }
@@ -113,7 +115,7 @@ module.exports = {
             }).then(function(data) {
               console.log(data);
               if (data.hits.total === 0) {
-                updateToken();
+                updateToken(token);
               } else {
                 findUniqueToken();
               }

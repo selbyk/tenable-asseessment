@@ -27,7 +27,7 @@ module.exports = {
               message: {
                 type: 'error',
                 code: 401,
-                message: 'Unauthorized, invalid token must be given.'
+                message: 'Unauthorized, valid token must be given.'
               }
             }
           });
